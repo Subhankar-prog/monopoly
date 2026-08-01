@@ -1,0 +1,17 @@
+.footerContainer {
+  background: rgba(5, 15, 12, 0.6);
+  border-top: 1px solid rgba(217, 169, 79, 0.12);
+}
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 56px;
+}
+.copyright {
+  text-align: center;
+  font-family: var(--hero-body);
+  color: var(--ivory-200);
+  opacity: 0.6;
+  font-size: 12px;
+}

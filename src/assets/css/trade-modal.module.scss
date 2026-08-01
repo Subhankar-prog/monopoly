@@ -1,0 +1,135 @@
+.trade {
+  min-width: 480px;
+  max-width: 640px;
+  color: #eee;
+  padding: 4px 6px 10px;
+
+  @media (max-width: 600px) {
+    min-width: unset;
+    width: 88vw;
+  }
+}
+
+.partnerRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+
+  label {
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #ffd200;
+  }
+
+  select {
+    flex: 1;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid #444;
+    background: #1e1e26;
+    color: #fff;
+    font-weight: 600;
+  }
+}
+
+.columns {
+  display: flex;
+  gap: 14px;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
+}
+
+.column {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 10px 12px;
+
+  h4 {
+    margin: 0 0 8px;
+    font-size: 0.85rem;
+    letter-spacing: 0.03em;
+    color: #ffb400;
+    text-transform: uppercase;
+  }
+}
+
+.moneyRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+
+  label {
+    font-size: 0.8rem;
+    color: #ccc;
+  }
+
+  input {
+    width: 90px;
+    padding: 6px 8px;
+    border-radius: 6px;
+    border: 1px solid #444;
+    background: #1e1e26;
+    color: #fff;
+  }
+}
+
+.siteList {
+  max-height: 220px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.siteRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  padding: 4px 2px;
+  cursor: pointer;
+
+  input {
+    accent-color: #ffb400;
+  }
+}
+
+.empty {
+  color: #777;
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+.error {
+  color: #ff6b6b;
+  font-size: 0.82rem;
+  margin: 10px 0 0;
+}
+
+.sendButton {
+  margin-top: 16px;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #ffb400, #ff8a00);
+  color: #1a1a1a;
+  font-weight: 800;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: filter 150ms ease;
+
+  &:hover:not(:disabled) {
+    filter: brightness(1.08);
+  }
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}

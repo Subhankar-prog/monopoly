@@ -1,0 +1,8 @@
+.home {
+  width: 100%;
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse 900px 500px at 15% 8%, rgba(217, 169, 79, 0.07), transparent 60%),
+    radial-gradient(ellipse 700px 500px at 88% 20%, rgba(34, 96, 66, 0.35), transparent 55%),
+    linear-gradient(175deg, var(--felt-900) 0%, var(--felt-950) 55%, #050f0c 100%);
+}

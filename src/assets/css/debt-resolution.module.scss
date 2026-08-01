@@ -1,0 +1,230 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 15000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 50% 30%, rgba(60, 10, 10, 0.75), rgba(10, 2, 5, 0.92));
+  backdrop-filter: blur(6px);
+  padding: 20px;
+}
+
+.panel {
+  position: relative;
+  width: min(560px, 100%);
+  max-height: 86vh;
+  overflow-y: auto;
+  background: linear-gradient(155deg, #2c1420 0%, #1f0f18 60%, #150a10 100%);
+  border: 1px solid rgba(255, 107, 107, 0.4);
+  border-radius: 22px;
+  padding: 30px 26px 24px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 107, 107, 0.2);
+  color: #fff;
+}
+
+.ribbon {
+  position: absolute;
+  top: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 24px 9px;
+  border-radius: 0 0 14px 14px;
+  background: linear-gradient(135deg, #ff6b6b, #d63b3b);
+  color: #fff;
+  font-weight: 900;
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  font-weight: 800;
+  text-align: center;
+  margin: 30px 0 8px;
+  color: #ff8f8f;
+}
+
+.subtitle {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.92rem;
+  line-height: 1.5;
+  margin: 0 0 22px;
+}
+
+.propertyList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 320px;
+  overflow-y: auto;
+  margin-bottom: 18px;
+}
+
+.empty {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.5);
+  padding: 20px 0;
+  font-style: italic;
+}
+
+.propertyRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 10px 14px;
+}
+
+.propertyInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.propertyName {
+  font-weight: 700;
+  font-size: 0.92rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.mortgagedTag {
+  font-size: 0.65rem;
+  font-weight: 800;
+  background: rgba(180, 150, 255, 0.2);
+  color: #c9b3ff;
+  padding: 1px 8px;
+  border-radius: 999px;
+}
+.builtTag {
+  font-size: 0.65rem;
+  font-weight: 800;
+  background: rgba(249, 192, 96, 0.2);
+  color: #f9c060;
+  padding: 1px 8px;
+  border-radius: 999px;
+}
+
+.propertyValue {
+  font-size: 0.76rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.propertyActions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.mortgageBtn,
+.sellBtn {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.78rem;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+  color: #fff;
+  white-space: nowrap;
+}
+.mortgageBtn {
+  background: linear-gradient(155deg, #b487ff, #7a4fd6);
+}
+.sellBtn {
+  background: linear-gradient(155deg, #ffb066, #e2801f);
+}
+.mortgageBtn:disabled,
+.sellBtn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.error {
+  color: #ff8f8f;
+  font-size: 0.85rem;
+  text-align: center;
+  margin: 0 0 14px;
+}
+
+.bottomActions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 16px;
+}
+
+.tradeBtn {
+  font-family: var(--font-display);
+  font-weight: 800;
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(155deg, #4fc3f7, #039be5);
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 5px 0 #01579b;
+}
+.tradeBtn:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 #01579b;
+}
+
+.bankruptBtn {
+  font-family: var(--font-display);
+  font-weight: 800;
+  padding: 12px;
+  border: 1px solid rgba(255, 107, 107, 0.5);
+  border-radius: 12px;
+  background: transparent;
+  color: #ff8f8f;
+  cursor: pointer;
+}
+.bankruptBtn:hover {
+  background: rgba(255, 107, 107, 0.1);
+}
+
+.confirmBankruptcy {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: center;
+  background: rgba(255, 107, 107, 0.1);
+  border-radius: 12px;
+  padding: 12px;
+}
+.confirmBankruptcy span {
+  font-size: 0.85rem;
+  color: #ffb3b3;
+  font-weight: 600;
+}
+.bankruptBtnConfirm {
+  font-family: var(--font-display);
+  font-weight: 800;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(155deg, #ff6b6b, #d63b3b);
+  color: #fff;
+  cursor: pointer;
+}
+.cancelBtn {
+  font-family: var(--font-display);
+  font-weight: 700;
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+}

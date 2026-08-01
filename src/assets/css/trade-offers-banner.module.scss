@@ -1,0 +1,107 @@
+.banner {
+  position: fixed;
+  left: 16px;
+  bottom: 16px;
+  z-index: 11000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 320px;
+}
+
+.card {
+  background: linear-gradient(135deg, #1f2a3a, #141b26);
+  border: 1px solid rgba(255, 180, 0, 0.4);
+  border-radius: 12px;
+  padding: 12px 14px;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.45);
+  animation: slideIn 260ms cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+  color: #eee;
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateX(-30px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.title {
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: #ffd200;
+  margin-bottom: 6px;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 0.78rem;
+  margin-bottom: 10px;
+}
+
+.give {
+  color: #8fd694;
+}
+
+.get {
+  color: #ffb0b0;
+}
+
+.buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.buttons button {
+  flex: 1;
+  border: none;
+  border-radius: 7px;
+  padding: 7px 8px;
+  font-weight: 700;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+
+.accept {
+  background: #3ecf6e;
+  color: #0b1a10;
+}
+
+.reject {
+  background: #444c58;
+  color: #eee;
+}
+
+.buttons button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.tradeFab {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 11000;
+  background: linear-gradient(135deg, #ffb400, #ff8a00);
+  color: #1a1a1a;
+  border: none;
+  border-radius: 999px;
+  padding: 14px 20px;
+  font-weight: 800;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(255, 138, 0, 0.4);
+  transition: transform 150ms ease, filter 150ms ease;
+}
+
+.tradeFab:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.06);
+}
+

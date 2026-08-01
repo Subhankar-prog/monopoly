@@ -1,0 +1,54 @@
+.actionInfo {
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+  border-radius: 16px;
+  width: 280px;
+  max-width: 80vw;
+  overflow: hidden;
+  border: 1px solid rgba(255, 213, 79, 0.4);
+}
+.header {
+  background: linear-gradient(155deg, #7a1fa8, #4a1172);
+}
+.title {
+  color: white;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.1rem;
+  letter-spacing: 0.03em;
+  text-transform: capitalize;
+  padding: 12px 18px;
+  margin: 0;
+}
+.main {
+  background: #1c1430;
+  padding: 18px 16px;
+  text-align: center;
+}
+.main p {
+  color: #b3a8d4;
+  font-size: 0.85rem;
+  margin: 0 0 12px;
+}
+.mortgagedIcon {
+  width: 100px;
+  height: auto;
+}
+.close {
+  font-family: var(--font-display);
+  font-weight: 700;
+  padding: 8px 22px;
+  background: linear-gradient(155deg, #4fc3f7, #039be5);
+  border: none;
+  color: white;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 4px 0 #01579b;
+  transition: transform 120ms ease;
+}
+.close:hover {
+  transform: translateY(-1px);
+}
+.close:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #01579b;
+}

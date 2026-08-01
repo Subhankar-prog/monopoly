@@ -1,0 +1,36 @@
+.header {
+  width: 100%;
+  padding: 8px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(7, 26, 21, 0.55);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(217, 169, 79, 0.15);
+}
+.headerInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo {
+  height: 34px;
+}
+.logo img {
+  height: 100%;
+  width: auto;
+}
+.navCta {
+  font-family: var(--hero-body);
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--felt-950);
+  background: linear-gradient(160deg, var(--brass-300), var(--brass-500));
+  padding: 9px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: transform 150ms ease;
+}
+.navCta:hover {
+  transform: translateY(-1px);
+}

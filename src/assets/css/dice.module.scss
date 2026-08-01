@@ -1,0 +1,102 @@
+.diceZoneInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.rollPrompt {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  margin: 0;
+  letter-spacing: 0.01em;
+  text-align: center;
+}
+
+.waitingPrompt {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+  letter-spacing: 0.01em;
+  text-align: center;
+  animation: waitPulse 1.8s ease-in-out infinite;
+}
+@keyframes waitPulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.9; }
+}
+
+.spectatorPrompt {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #ff9d9d;
+  margin: 0;
+  text-align: center;
+  max-width: 280px;
+}
+
+.diceContainer {
+  padding: 6px;
+  border-radius: 16px;
+  display: flex;
+  gap: 12px;
+  cursor: pointer;
+  transition: transform 150ms ease;
+}
+.diceContainer:active {
+  transform: scale(0.96);
+}
+
+.canRoll {
+  animation: diceGlow 1.8s ease-in-out infinite;
+}
+@keyframes diceGlow {
+  0%, 100% { filter: drop-shadow(0 0 10px rgba(255, 213, 79, 0.55)); }
+  50% { filter: drop-shadow(0 0 22px rgba(255, 213, 79, 0.9)); }
+}
+
+.dice {
+  width: 66px;
+  height: 66px;
+  border-radius: 14px;
+  background: linear-gradient(155deg, #ffffff, #f0f0f5);
+  box-shadow:
+    0 8px 0 rgba(0, 0, 0, 0.15),
+    0 12px 20px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  padding: 9px;
+}
+
+.pipGrid {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 2px;
+}
+.pip {
+  border-radius: 50%;
+  align-self: center;
+  justify-self: center;
+  width: 62%;
+  height: 62%;
+}
+.pipOn {
+  background: radial-gradient(circle at 30% 30%, #4a4a5e, #1a1a2e);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15);
+}
+
+.inactive {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+.inactive .dice {
+  background: linear-gradient(155deg, #cfcfd6, #b8b8c2);
+}

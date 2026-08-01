@@ -1,0 +1,57 @@
+:root {
+  --font-display: 'Baloo 2', 'Nunito', sans-serif;
+  --font-body: 'Nunito', 'Segoe UI', sans-serif;
+
+  --color-purple-900: #2c0a4a;
+  --color-purple-800: #3d0f66;
+  --color-purple-700: #591684;
+  --color-purple-600: #7a1fa8;
+  --color-purple-500: #9c33cc;
+  --color-gold: #ffd54f;
+  --color-gold-dark: #ffa000;
+  --color-green: #2ecc71;
+  --color-green-dark: #1e9e56;
+  --color-pink: #ec4899;
+  --color-pink-dark: #c2287a;
+  --color-blue: #29b6f6;
+  --color-blue-dark: #0288d1;
+  --color-ink: #1a1a2e;
+
+  /* Home / Lobby only — a distinct "casino table" identity: deep felt
+     green, brass accents, warm ivory text. Kept separate from the tokens
+     above (which the in-game board still uses) so this redesign doesn't
+     touch board styling. */
+  --hero-display: 'Fraunces', Georgia, serif;
+  --hero-body: 'Manrope', 'Segoe UI', sans-serif;
+  --felt-950: #071a15;
+  --felt-900: #0b241c;
+  --felt-800: #123527;
+  --felt-700: #1a4a35;
+  --felt-600: #226042;
+  --brass-100: #f6e9c9;
+  --brass-300: #e8c477;
+  --brass-400: #d9a94f;
+  --brass-500: #c3922f;
+  --brass-600: #9c7223;
+  --ivory-100: #f6f1e6;
+  --ivory-200: #ded4bd;
+  --ruby-500: #c1483f;
+  --ruby-400: #d96a5f;
+  --emerald-400: #4fbf8b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-body);
+  color: var(--color-ink);
+}
+
+button {
+  font-family: var(--font-display);
+}

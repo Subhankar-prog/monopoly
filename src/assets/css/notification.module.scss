@@ -1,0 +1,520 @@
+// ============================================================================
+// BIG REVEAL — full-screen dramatic overlay for major moments
+// (chance/chest draws, purchases, jail, bankruptcy, trades, game over)
+// ============================================================================
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  z-index: 9999;
+  padding: 20px;
+}
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 40%, rgba(20, 10, 40, 0.75), rgba(4, 2, 10, 0.92));
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  animation: fadeIn 220ms ease forwards;
+}
+.glowRing {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 215, 0, 0.6);
+  transform: translate(-50%, -50%) scale(0.5);
+  opacity: 0.9;
+  animation: ringBurst 900ms cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+  pointer-events: none;
+}
+@keyframes ringBurst {
+  0% { transform: translate(-50%, -50%) scale(0.3); opacity: 0.9; border-width: 6px; }
+  100% { transform: translate(-50%, -50%) scale(9); opacity: 0; border-width: 1px; }
+}
+
+.card {
+  position: relative;
+  background: linear-gradient(155deg, #241a3d 0%, #1a1330 55%, #120c22 100%);
+  padding: 30px 28px 26px;
+  border-radius: 24px;
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.65),
+    0 0 0 1px rgba(255, 215, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transform: translateY(30px) scale(0.94);
+  opacity: 1;
+  pointer-events: auto;
+  text-align: center;
+  min-width: 460px;
+  max-width: min(560px, 100%);
+  border: 1px solid rgba(255, 215, 0, 0.35);
+  overflow: hidden;
+
+  @media (max-width: 600px) {
+    min-width: unset;
+    width: 92vw;
+    padding: 26px 18px 20px;
+  }
+}
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 15% -10%, rgba(255, 215, 0, 0.16), transparent 45%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0));
+  pointer-events: none;
+}
+.ribbon {
+  position: absolute;
+  top: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 9px 28px 10px;
+  border-radius: 0 0 14px 14px;
+  background: linear-gradient(135deg, #ffd54f, #ffb400);
+  color: #2a1a00;
+  font-size: 0.9rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 0 8px 18px rgba(255, 180, 0, 0.35);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.ribbonIcon {
+  font-size: 1rem;
+}
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 34px;
+  margin-bottom: 18px;
+}
+.titleGroup {
+  text-align: left;
+}
+.title {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 0.01em;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+.subtitle {
+  display: block;
+  margin-top: 5px;
+  font-size: 0.98rem;
+  color: #cabfe6;
+}
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #3a2c5e, #201638);
+  border: 2px solid rgba(255, 215, 0, 0.5);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4), inset 0 0 12px rgba(255, 215, 0, 0.15);
+  font-size: 1.5rem;
+}
+.amountBlock {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 18px;
+  text-align: center;
+}
+.amountLabel {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #a396c9;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.amountValueBlock {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 24px;
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  margin: 0 auto;
+}
+.currency {
+  font-size: 1.2rem;
+  color: #ffd54f;
+  font-weight: 700;
+}
+.amountValue {
+  font-size: 2.8rem;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+}
+.amountValueGain {
+  color: #6ee892;
+}
+.amountValueLoss {
+  color: #ff8080;
+}
+.message {
+  font-size: 1rem;
+  color: #e8e1fa;
+  line-height: 1.55;
+  margin: 0 auto 18px;
+  max-width: 92%;
+  padding: 15px 18px;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-weight: 500;
+}
+.noteFooter {
+  font-size: 0.85rem;
+  color: #8f81b8;
+  margin-top: 12px;
+  letter-spacing: 0.02em;
+}
+.closeButton {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 180ms ease, transform 180ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+.closeButton:hover {
+  background: rgba(255, 255, 255, 0.22);
+  transform: scale(1.08) rotate(90deg);
+}
+
+/* Kind-specific accent glows on the card border */
+.credit { box-shadow: 0 30px 80px rgba(0,0,0,0.65), 0 0 0 1px rgba(110,232,146,0.4), 0 0 40px rgba(110,232,146,0.18), inset 0 1px 0 rgba(255,255,255,0.08); }
+.debit { box-shadow: 0 30px 80px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,128,128,0.4), 0 0 40px rgba(255,128,128,0.18), inset 0 1px 0 rgba(255,255,255,0.08); }
+.buy { box-shadow: 0 30px 80px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,213,79,0.5), 0 0 46px rgba(255,213,79,0.25), inset 0 1px 0 rgba(255,255,255,0.08); }
+.sell { box-shadow: 0 30px 80px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,213,79,0.4), 0 0 40px rgba(255,213,79,0.18), inset 0 1px 0 rgba(255,255,255,0.08); }
+.mortgage { box-shadow: 0 30px 80px rgba(0,0,0,0.65), 0 0 0 1px rgba(180,150,255,0.4), 0 0 40px rgba(180,150,255,0.18), inset 0 1px 0 rgba(255,255,255,0.08); }
+.redeem { box-shadow: 0 30px 80px rgba(0,0,0,0.65), 0 0 0 1px rgba(135,217,221,0.4), 0 0 40px rgba(135,217,221,0.18), inset 0 1px 0 rgba(255,255,255,0.08); }
+.build { box-shadow: 0 30px 80px rgba(0,0,0,0.65), 0 0 0 1px rgba(249,192,96,0.4), 0 0 40px rgba(249,192,96,0.18), inset 0 1px 0 rgba(255,255,255,0.08); }
+.chance { box-shadow: 0 30px 80px rgba(0,0,0,0.65), 0 0 0 1px rgba(179,136,255,0.5), 0 0 50px rgba(179,136,255,0.28), inset 0 1px 0 rgba(255,255,255,0.08); }
+.chest { box-shadow: 0 30px 80px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,183,77,0.5), 0 0 50px rgba(255,183,77,0.28), inset 0 1px 0 rgba(255,255,255,0.08); }
+.jail { box-shadow: 0 30px 80px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,107,107,0.5), 0 0 50px rgba(255,107,107,0.25), inset 0 1px 0 rgba(255,255,255,0.08); }
+.info { box-shadow: 0 30px 80px rgba(0,0,0,0.65), 0 0 0 1px rgba(150,160,255,0.4), 0 0 40px rgba(150,160,255,0.18), inset 0 1px 0 rgba(255,255,255,0.08); }
+
+/* Bottom auto-dismiss progress bar */
+.bigProgressTrack {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+.bigProgressFill {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, #ffd54f, #ff8a00);
+  transform-origin: left center;
+  animation-name: shrinkBar;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+@keyframes shrinkBar {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0); }
+}
+
+/* Coins animation */
+.coins {
+  position: relative;
+  height: 46px;
+  margin-top: 4px;
+  text-align: center;
+}
+.coin {
+  width: 30px;
+  height: 30px;
+  background: radial-gradient(circle at 30% 30%, #fff2a8, #ffd24d 40%, #ffb400 100%);
+  border-radius: 50%;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35), inset 0 -2px 4px rgba(0,0,0,0.15);
+  display: inline-block;
+  margin: 0 6px;
+  transform-origin: 50% 50%;
+  animation: coinPop 900ms cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+}
+.coin:nth-child(1) { animation-delay: 0ms; }
+.coin:nth-child(2) { animation-delay: 80ms; }
+.coin:nth-child(3) { animation-delay: 160ms; }
+.coinDebit {
+  background: radial-gradient(circle at 30% 30%, #ffb3b3, #ff6b6b 40%, #d13c3c 100%);
+  animation-name: coinDrop;
+}
+@keyframes coinPop {
+  0% { transform: translateY(18px) scale(0.5); opacity: 0; }
+  30% { transform: translateY(-6px) scale(1.15); opacity: 1; }
+  65% { transform: translateY(-18px) scale(1.02); opacity: 0.9; }
+  100% { transform: translateY(-42px) scale(1); opacity: 0; }
+}
+@keyframes coinDrop {
+  0% { transform: translateY(-18px) scale(0.5); opacity: 0; }
+  30% { transform: translateY(4px) scale(1.15); opacity: 1; }
+  65% { transform: translateY(14px) scale(1.02); opacity: 0.9; }
+  100% { transform: translateY(38px) scale(1); opacity: 0; }
+}
+
+/* Card draw reveal (Chance / Community Chest) */
+.cardIcon {
+  position: relative;
+  width: 190px;
+  height: 118px;
+  border-radius: 16px;
+  margin: 6px auto 16px auto;
+  background: linear-gradient(160deg, #fdfaff 0%, #ece2ff 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-weight: 800;
+  color: #4a2e8f;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4), inset 0 0 0 3px rgba(255, 255, 255, 0.75);
+  border: 3px solid #fff;
+  transform: perspective(700px) rotateY(0deg) scale(0.9);
+  animation: cardFlip 640ms cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+  transform-style: preserve-3d;
+  overflow: hidden;
+}
+.cardIconGlyph {
+  font-size: 2.7rem;
+  line-height: 1;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
+}
+.cardIconLabel {
+  font-size: 0.76rem;
+  letter-spacing: 0.15em;
+  color: #6b4fb0;
+  font-weight: 900;
+}
+.cardIconCornerTL,
+.cardIconCornerBR {
+  position: absolute;
+  font-size: 0.9rem;
+  opacity: 0.35;
+}
+.cardIconCornerTL { top: 8px; left: 10px; }
+.cardIconCornerBR { bottom: 8px; right: 10px; transform: rotate(180deg); }
+.cardSheen {
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(115deg, transparent 0%, rgba(255, 255, 255, 0.75) 50%, transparent 100%);
+  transform: skewX(-18deg);
+  animation: sheenSweep 1100ms ease-out 550ms forwards;
+  opacity: 0;
+}
+@keyframes sheenSweep {
+  0% { left: -60%; opacity: 0; }
+  15% { opacity: 0.9; }
+  60% { opacity: 0.5; }
+  100% { left: 130%; opacity: 0; }
+}
+@keyframes cardFlip {
+  0% { transform: perspective(700px) rotateY(-110deg) scale(0.7); opacity: 0; }
+  55% { transform: perspective(700px) rotateY(16deg) scale(1.05); opacity: 1; }
+  80% { transform: perspective(700px) rotateY(-6deg) scale(1); }
+  100% { transform: perspective(700px) rotateY(0deg) scale(1); opacity: 1; }
+}
+
+.pulse {
+  animation: slideUp 320ms cubic-bezier(0.2, 0.9, 0.3, 1) forwards, pulseGlow 1300ms ease-in-out forwards;
+}
+@keyframes pulseGlow {
+  0% { transform: scale(0.97); }
+  45% { transform: scale(1.015); }
+  100% { transform: scale(1); }
+}
+.shake {
+  animation: slideUp 320ms cubic-bezier(0.2, 0.9, 0.3, 1) forwards, pulseGlow 1300ms ease-in-out forwards, shakeCard 480ms ease-in-out 320ms;
+}
+@keyframes shakeCard {
+  0%, 100% { margin-left: 0; }
+  20% { margin-left: -12px; }
+  40% { margin-left: 10px; }
+  60% { margin-left: -7px; }
+  80% { margin-left: 4px; }
+}
+
+/* Confetti */
+.confetti {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: inherit;
+  z-index: 1;
+}
+.confetti span {
+  position: absolute;
+  top: -14px;
+  width: 8px;
+  height: 14px;
+  opacity: 0.95;
+  transform: translateY(-10px) rotate(10deg);
+  animation: confetto 1500ms ease-in forwards;
+}
+.confettiTri {
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 10px solid currentColor;
+}
+@keyframes confetto {
+  0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(360px) rotate(460deg); opacity: 0; }
+}
+@keyframes slideUp {
+  to { transform: translateY(0) scale(1); opacity: 1; }
+}
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+// ============================================================================
+// TOAST — compact slide-in banner for routine actions (rent, mortgage, etc.)
+// ============================================================================
+.toastLayer {
+  position: fixed;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9998;
+  pointer-events: none;
+  width: min(420px, 92vw);
+}
+.toast {
+  position: relative;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 40px 12px 14px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #241a3d, #171128);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.04);
+  overflow: hidden;
+  animation: toastIn 380ms cubic-bezier(0.2, 0.85, 0.3, 1.3) forwards;
+}
+@keyframes toastIn {
+  0% { transform: translateY(-30px) scale(0.92); opacity: 0; }
+  60% { transform: translateY(4px) scale(1.02); opacity: 1; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+.toastIcon {
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+.toastBody {
+  flex: 1;
+  min-width: 0;
+}
+.toastTitle {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 0.01em;
+}
+.toastMessage {
+  font-size: 0.76rem;
+  color: #b3a8d4;
+  margin-top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.toastAmount {
+  flex-shrink: 0;
+  font-size: 0.95rem;
+  font-weight: 900;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+.toastAmountGain {
+  color: #6ee892;
+  background: rgba(110, 232, 146, 0.12);
+}
+.toastAmountLoss {
+  color: #ff8f8f;
+  background: rgba(255, 128, 128, 0.12);
+}
+.toastClose {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 22px;
+  height: 22px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #776a9c;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.toastClose:hover {
+  color: #fff;
+}
+.toastProgress {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 100%;
+  background: linear-gradient(90deg, #ffd54f, #ff8a00);
+  transform-origin: left center;
+  animation-name: shrinkBar;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
