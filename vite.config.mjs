@@ -15,7 +15,7 @@ const craEnvVars = Object.keys(process.env)
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: process.env.NODE_ENV === 'production' ? '/monopoly/' : '/',
+  base: '/',
   build: {
     outDir: './build'
   },
