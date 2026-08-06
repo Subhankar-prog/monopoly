@@ -411,7 +411,7 @@ export default function InaugurationPage() {
           {(phase === 'open' || phase === 'welcome') && (
             <div className={`${style.welcomeStage} ${phase === 'welcome' ? style.welcomeVisible : ''}`}>
               <div className={style.crownIcon}>👑</div>
-              <h1 className={style.welcomeTitle}>Welcome to the Grand<br /><span className={style.gameName}>Inauguration</span></h1>
+              <h1 className={style.welcomeTitle}>Welcome to the Grand<br /><span className={style.gameName}>Inaguration</span></h1>
               <div className={style.dividerLine} />
               <h2 className={style.gameSubtitle}>🎉&nbsp;<span className={style.heavyBusiness}>HEAVY BUSINESS</span>&nbsp;🎉</h2>
               <p className={style.tagline}>The board game experience you've been waiting for is finally here.</p>
