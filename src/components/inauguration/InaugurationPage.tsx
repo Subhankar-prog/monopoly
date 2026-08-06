@@ -11,7 +11,7 @@ const SLIDES = [
   { main: 'Welcome to', sub: null, voice: 'Welcome  too', duration: 2600 },
   { main: 'The Inaguration of', sub: null, voice: 'The  Inauguration  of', duration: 2800 },
   { main: 'Most Awaited Monopoly Game', sub: 'of Odisha', voice: 'The most awaited  Monopoly game  of  O-dee-sha', duration: 3400, gold: true },
-  { main: 'Developed By', sub: 'Subhankar', voice: 'Developed  by  Subhha-ka.', duration: 3400, gold: true },
+  { main: 'Developed By', sub: 'Subhankar', voice: 'Developed  by  Subhhon-kar', duration: 3400, gold: true },
   { main: 'Special Thanks to', sub: null, voice: 'Special  thanks  to', duration: 2000 },
   { main: 'BHAU · ROCKY · PINTU · BEN10', sub: null, voice: 'Bhaaou...  Roki ...  Pintuu ...  Ben  Ten', duration: 4000, names: true },
   { main: 'Grab your popcorn...', sub: null, voice: 'Grab  your  popcorn', duration: 2800, italic: true },
@@ -21,7 +21,7 @@ const SLIDES = [
 const FADE_MS = 700;
 
 // ──────────────────────────────────────────────
-// Voice narrator — dead simple, no async, no caching..
+// Voice narrator — dead simple, no async, no caching
 // ──────────────────────────────────────────────
 function speak(text: string) {
   try {
