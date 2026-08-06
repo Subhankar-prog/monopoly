@@ -1,10 +1,10 @@
 export const calculatePositionsHelper = (
-  site,
-  positions,
-  side1,
-  side2,
-  side3,
-  side4
+  site: number,
+  positions: any[],
+  side1: number,
+  side2: number,
+  side3: number,
+  side4: number
 ) => {
   positions[site] = {
     right: side1,
@@ -27,7 +27,6 @@ export const calculatePositionsHelper = (
     bottom: side4,
     site: site + 20,
   };
-
   positions[site + 30] = {
     top: side1,
     right: side2,
@@ -37,32 +36,31 @@ export const calculatePositionsHelper = (
   };
 };
 
-export const calculatePositions = board => {
-  const { side: boardSide, rowWidth } = board;
-  const rowLength = boardSide - rowWidth;
-  const firstSiteLength = 120;
-  const totalSitesInRow = 10;
-  const siteLength = Math.floor(
-    (rowLength - firstSiteLength) / (totalSitesInRow - 1)
-  );
-  const playerSize = 30;
-  let side1 = null;
-  const side2 = Math.floor(rowWidth / 2 - playerSize / 2);
-  let side3 = null;
-  const side4 = boardSide - side2 - playerSize;
-  const positions = Array(41);
-  for (let site = 0; site < 10; site++) {
-    if (site === 0) side1 = Math.floor(firstSiteLength / 2 - playerSize / 2);
-    else
-      side1 = Math.floor(
-        firstSiteLength +
-          siteLength * (site - 1) +
-          siteLength / 2 -
-          playerSize / 2
-      );
+export const calculatePositions = (board: any) => {
+  const { side: boardSide, rowWidth: rawRowWidth } = board;
+  const rowWidth = rawRowWidth || Math.max(50, Math.floor(boardSide * 0.21));
+  const cornerLength = rowWidth;
+  const innerLength = boardSide - 2 * cornerLength;
+  const siteLength = innerLength / 9;
+  const playerSize = Math.max(18, Math.floor(rowWidth * 0.35));
 
-    side3 = boardSide - side1 - playerSize;
+  const side2 = Math.floor(rowWidth / 2 - playerSize / 2);
+  const side4 = boardSide - side2 - playerSize;
+  const positions = new Array(41);
+
+  for (let site = 0; site < 10; site++) {
+    let centerPos = 0;
+    if (site === 0) {
+      centerPos = cornerLength / 2;
+    } else {
+      centerPos = cornerLength + siteLength * (site - 1) + siteLength / 2;
+    }
+
+    const side1 = Math.floor(centerPos - playerSize / 2);
+    const side3 = boardSide - side1 - playerSize;
+
     calculatePositionsHelper(site, positions, side1, side2, side3, side4);
   }
+
   return positions;
 };

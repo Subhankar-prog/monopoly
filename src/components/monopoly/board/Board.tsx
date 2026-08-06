@@ -1,4 +1,3 @@
-import React from 'react';
 import style from '../../../assets/css/board.module.scss';
 import Row from '../row/Row';
 import DiceContainer from '../dice/DiceContainer';
@@ -17,13 +16,21 @@ import DebtResolutionPanel from '../debt/DebtResolutionPanel';
 
 import customLogo from '../../../assets/images/custom-logo.jpg';
 
-const Board = ({ side, totalPlayers, sites, active, network }: any) => {
+const Board = ({ side, rowWidth, totalPlayers, sites, active, network }: any) => {
+  const calculatedRowWidth = rowWidth || Math.max(65, Math.floor(side * 0.21));
+
   return (
     <div className={style.tableLayout}>
       <div className={style.boardShell}>
         <div
           className={style.board}
-          style={{ width: side + 'px', height: side + 'px' }}
+          style={
+            {
+              width: side + 'px',
+              height: side + 'px',
+              '--row-width': calculatedRowWidth + 'px',
+            } as React.CSSProperties
+          }
         >
           {[
             sites.slice(0, 10).reverse(),
@@ -94,6 +101,7 @@ const Board = ({ side, totalPlayers, sites, active, network }: any) => {
 const mapStateToProps = (store: any) => {
   return {
     side: store.board.side,
+    rowWidth: store.board.rowWidth,
     totalPlayers: store.playersData.totalPlayers,
     sites: store.siteData.sites,
     active: store.actionData.active,

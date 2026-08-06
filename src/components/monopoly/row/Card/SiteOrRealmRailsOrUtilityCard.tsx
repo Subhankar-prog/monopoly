@@ -9,22 +9,25 @@ const SiteOrRealmRailsOrUtilityCard = ({
   boughtBy,
   onCardClick,
   active,
-}) => {
+}: any) => {
+  const isBought = boughtBy !== null && boughtBy !== undefined;
+
   const genClassList = () => {
     let classList = '';
     classList += style.card + ' ';
     classList += rowNum === 1 || rowNum === 2 ? style.reverse + ' ' : '';
     classList +=
-      (rowNum === 1 || rowNum === 2) && boughtBy != null
+      (rowNum === 1 || rowNum === 2) && isBought
         ? `${style.sold} ${style.soldRev} ${style[colors[boughtBy]]} `
         : '';
     classList +=
-      (rowNum === 3 || rowNum === 4) && boughtBy != null
+      (rowNum === 3 || rowNum === 4) && isBought
         ? `${style.sold} ${style[colors[boughtBy]]} `
         : '';
     classList += !active ? style.inactive + ' ' : '';
     return classList;
   };
+
   return (
     <div className={genClassList()} onClick={onCardClick}>
       <div className={`${style.strip} ${data.color}`}>
@@ -37,6 +40,14 @@ const SiteOrRealmRailsOrUtilityCard = ({
         <p className={style.sellingPrice}>${data.sellingPrice}</p>
         <p className={style.name}>{data.name}</p>
       </div>
+
+      {/* Prominent Owner Badge Indicator */}
+      {isBought && (
+        <span className={`${style.ownerBadge} ${style[colors[boughtBy]]}`}>
+          P{boughtBy + 1}
+        </span>
+      )}
+
       {data.isMortgaged && (
         <img className={style.mortgaged} src={mortgagedIcon} alt="mortgaged" />
       )}

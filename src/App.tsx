@@ -6,6 +6,7 @@ import Monopoly from './components/monopoly/Monopoly';
 import Home from './components/home/Home';
 import NotFound from './components/not_found/NotFound';
 import Lobby from './components/lobby/Lobby';
+import InaugurationPage from './components/inauguration/InaugurationPage';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/lobby" element={<Lobby />} />
           <Route path="/monopoly" element={<Monopoly />} />
           <Route path="/monopoly/:roomCode" element={<Monopoly />} />
+          <Route path="/inauguration" element={<InaugurationPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>

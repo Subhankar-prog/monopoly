@@ -69,7 +69,7 @@ const Monopoly = ({
       const side = Math.max(340, Math.min(w - 20, h - 40, 720));
       const boardData = {
         side: side,
-        rowWidth: Math.max(60, Math.floor(side * 0.16)),
+        rowWidth: Math.max(65, Math.floor(side * 0.21)),
       };
       setBoardSize(boardData);
       calculateSitePositions(boardData);

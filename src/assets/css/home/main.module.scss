@@ -14,6 +14,38 @@
   overflow: hidden;
 }
 
+.ambientOrb1 {
+  position: absolute;
+  top: 15%;
+  left: 10%;
+  width: 450px;
+  height: 450px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, rgba(139, 30, 27, 0.08) 50%, transparent 70%);
+  filter: blur(50px);
+  pointer-events: none;
+  animation: orbPulse 8s ease-in-out infinite alternate;
+}
+
+.ambientOrb2 {
+  position: absolute;
+  bottom: 10%;
+  right: 12%;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139, 30, 27, 0.25) 0%, rgba(212, 175, 55, 0.1) 60%, transparent 75%);
+  filter: blur(60px);
+  pointer-events: none;
+  animation: orbPulse 10s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes orbPulse {
+  0% { transform: scale(1) translate(0, 0); opacity: 0.7; }
+  50% { transform: scale(1.18) translate(-20px, 15px); opacity: 1; }
+  100% { transform: scale(0.9) translate(15px, -20px); opacity: 0.6; }
+}
+
 .tileField {
   position: absolute;
   inset: 0;
@@ -24,38 +56,42 @@
   position: absolute;
   width: 78px;
   height: 100px;
-  border-radius: 10px;
-  background: linear-gradient(155deg, rgba(246, 241, 230, 0.09), rgba(246, 241, 230, 0.03));
-  border: 1px solid rgba(246, 241, 230, 0.12);
+  border-radius: 12px;
+  background: linear-gradient(155deg, rgba(255, 255, 255, 0.14), rgba(246, 241, 230, 0.04));
+  border: 1px solid rgba(212, 175, 55, 0.3);
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 10px;
-  gap: 6px;
-  animation: tileFloat 7s ease-in-out infinite;
-  backdrop-filter: blur(1px);
+  justify-content: space-between;
+  padding: 8px 6px;
+  gap: 4px;
+  animation: tileFloat 6s ease-in-out infinite;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
+
 .floatingTileBand {
-  width: 70%;
-  height: 16px;
-  border-radius: 3px;
-  opacity: 0.75;
+  width: 85%;
+  height: 14px;
+  border-radius: 4px;
+  opacity: 0.85;
 }
+
+.floatingIcon {
+  font-size: 1.4rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+
 .floatingTileLine {
-  width: 55%;
+  width: 60%;
   height: 3px;
   border-radius: 2px;
-  background: rgba(246, 241, 230, 0.18);
+  background: rgba(246, 241, 230, 0.25);
 }
-.floatingTileLineShort {
-  width: 35%;
-  height: 3px;
-  border-radius: 2px;
-  background: rgba(246, 241, 230, 0.14);
-}
+
 @keyframes tileFloat {
   0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
-  50% { transform: translateY(-16px) rotate(var(--r, 0deg)); }
+  50% { transform: translateY(-22px) rotate(calc(var(--r, 0deg) + 4deg)); }
 }
 
 .heroContent {
@@ -94,6 +130,13 @@
 .odishaDot {
   margin-right: 6px;
   font-size: 0.9rem;
+  display: inline-block;
+  animation: diyaPulse 2s ease-in-out infinite;
+}
+
+@keyframes diyaPulse {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 2px #ffd700); }
+  50% { transform: scale(1.2); filter: drop-shadow(0 0 8px #ffd700); }
 }
 
 .eyebrow {
@@ -154,12 +197,12 @@
   border-radius: 12px;
   text-decoration: none;
   box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.6);
-  transition: transform 160ms ease, box-shadow 160ms ease;
+  transition: transform 200ms ease, box-shadow 200ms ease, background 200ms ease;
   display: inline-block;
 }
 .btnPrimary:hover {
-  transform: translateY(-3px) scale(1.03);
-  box-shadow: 0 16px 38px rgba(212, 175, 55, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  transform: translateY(-4px) scale(1.04);
+  box-shadow: 0 18px 42px rgba(212, 175, 55, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .btnGhost {
@@ -172,14 +215,14 @@
   padding: 15px 32px;
   border-radius: 12px;
   text-decoration: none;
-  transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+  transition: border-color 200ms ease, background 200ms ease, transform 200ms ease;
   display: inline-block;
   backdrop-filter: blur(6px);
 }
 .btnGhost:hover {
   border-color: #ffd700;
   background: rgba(139, 30, 27, 0.45);
-  transform: translateY(-2px);
+  transform: translateY(-3px);
 }
 
 .statRow {
@@ -232,20 +275,39 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 28px;
 }
+
 .step {
-  background: linear-gradient(160deg, rgba(246, 241, 230, 0.045), rgba(246, 241, 230, 0.015));
-  border: 1px solid rgba(246, 241, 230, 0.1);
+  background: linear-gradient(160deg, rgba(246, 241, 230, 0.05), rgba(246, 241, 230, 0.015));
+  border: 1px solid rgba(212, 175, 55, 0.2);
   border-radius: 16px;
   padding: 30px 26px;
+  transition: transform 240ms ease, border-color 240ms ease, box-shadow 240ms ease;
+
+  &:hover {
+    transform: translateY(-8px);
+    border-color: rgba(255, 215, 0, 0.6);
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.4), 0 0 20px rgba(212, 175, 55, 0.2);
+  }
 }
+
+.stepHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
 .stepNumber {
   font-family: var(--hero-display);
   font-weight: 500;
   font-size: 0.95rem;
   color: var(--brass-400);
-  display: block;
-  margin-bottom: 14px;
 }
+
+.stepIcon {
+  font-size: 1.5rem;
+}
+
 .stepTitle {
   font-family: var(--hero-display);
   font-weight: 600;

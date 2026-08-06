@@ -13,7 +13,7 @@
 }
 
 .specialCard {
-  flex-basis: 120px;
+  flex-basis: var(--row-width, 120px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -56,17 +56,20 @@
 .sellingPrice,
 .debit {
   font-family: var(--font-display);
-  font-size: 13px;
+  font-size: clamp(8px, 1.8vw, 13px);
   font-weight: 800;
   color: #16161f;
+  white-space: nowrap;
 }
 .name {
-  font-size: 9.5px;
+  font-size: clamp(6.5px, 1.3vw, 9.5px);
   font-weight: 700;
   color: #3a3a45;
   text-transform: uppercase;
   letter-spacing: 0.01em;
-  line-height: 1.15;
+  line-height: 1.1;
+  text-align: center;
+  word-break: break-word;
 }
 .reverse {
   flex-direction: row-reverse;
@@ -75,45 +78,52 @@
 .reverseSpecialCard {
 }
 
-/* Ownership marker: a colored corner flag on owned tiles */
+/* Ownership marker: a colored glowing border & owner pill badge */
 .sold {
-  box-shadow: inset 0 0 0 2px var(--owner-color, transparent);
-}
-.sold::after {
-  content: '';
-  position: absolute;
-  top: 4px;
-  left: 4px;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  z-index: 2;
-}
-.soldRev::after {
-  left: unset;
-  right: 4px;
+  box-shadow: inset 0 0 0 3px var(--owner-color, transparent), 0 0 10px var(--owner-color, transparent) !important;
+  border-color: var(--owner-color, #ffd700) !important;
 }
 
-.red::after,
-.red.sold {
-  --owner-color: #ed3b3b;
+.ownerBadge {
+  position: absolute;
+  bottom: 3px;
+  right: 3px;
+  font-size: 0.65rem;
+  font-family: var(--font-display);
+  font-weight: 800;
+  color: #ffffff;
+  background: var(--owner-color, #180302);
+  padding: 2px 5px;
+  border-radius: 6px;
+  z-index: 5;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  letter-spacing: -0.02em;
 }
-.red::after { background: #ed3b3b; }
-.yellow::after,
-.yellow.sold { --owner-color: #e0a800; }
-.yellow::after { background: #ffd23f; }
-.green::after,
-.green.sold { --owner-color: #35b76a; }
-.green::after { background: #35b76a; }
-.blue::after,
-.blue.sold { --owner-color: #1f7fd1; }
-.blue::after { background: #1f7fd1; }
-.orange::after,
-.orange.sold { --owner-color: #f5941f; }
-.orange::after { background: #f5941f; }
-.pink::after,
-.pink.sold { --owner-color: #e85fa5; }
-.pink::after { background: #e85fa5; }
+
+.soldRev .ownerBadge {
+  right: auto;
+  left: 3px;
+}
+
+.red {
+  --owner-color: #e74c3c;
+}
+.yellow {
+  --owner-color: #f1c40f;
+}
+.green {
+  --owner-color: #2ecc71;
+}
+.blue {
+  --owner-color: #3498db;
+}
+.orange {
+  --owner-color: #e67e22;
+}
+.pink {
+  --owner-color: #9b59b6;
+}
 
 /* Mortgaged */
 .mortgaged {

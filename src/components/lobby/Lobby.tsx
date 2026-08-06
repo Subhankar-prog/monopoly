@@ -255,6 +255,19 @@ const Lobby = ({
 
   return (
     <div className={style.lobby}>
+      {/* Floating Background Particles & Orbs */}
+      <div className={style.lobbyAmbientOrb1} aria-hidden="true" />
+      <div className={style.lobbyAmbientOrb2} aria-hidden="true" />
+      <div className={style.floatingParticlesField} aria-hidden="true">
+        <span className={style.particle} style={{ top: '12%', left: '8%', animationDelay: '0s' }}>🎲</span>
+        <span className={style.particle} style={{ top: '75%', left: '6%', animationDelay: '1.2s' }}>🪙</span>
+        <span className={style.particle} style={{ top: '22%', right: '9%', animationDelay: '0.8s' }}>🏠</span>
+        <span className={style.particle} style={{ top: '68%', right: '7%', animationDelay: '1.8s' }}>🪔</span>
+        <span className={style.particle} style={{ top: '85%', left: '25%', animationDelay: '2.5s' }}>✨</span>
+        <span className={style.particle} style={{ top: '15%', left: '42%', animationDelay: '3.1s' }}>👑</span>
+        <span className={style.particle} style={{ top: '82%', right: '28%', animationDelay: '3.6s' }}>🏆</span>
+      </div>
+
       <div className={style.lobbyCard}>
         <div className={style.lobbyLogoWrap}>
           <img src={customLogo} alt="Monopoly Logo" className={style.lobbyLogoImg} />
@@ -286,10 +299,22 @@ const Lobby = ({
             className={`${style.modeBtn} ${mode === 'bots' ? style.modeBtnActive : ''}`}
             onClick={() => { setMode('bots'); setError(''); }}
           >
-            🤖 Play vs Bots
+            🤖 Play vs Bots <span className={style.comingSoonBadge}>Soon</span>
           </button>
         </div>
 
+        {mode === 'bots' && (
+          <div className={style.comingSoonCard}>
+            <div className={style.comingSoonIcon}>🚀</div>
+            <h3 className={style.comingSoonTitle}>Play vs Bots - Coming Soon!</h3>
+            <p className={style.comingSoonText}>
+              Computer-controlled AI bot matches are currently under development. Single-player mode will be available in an upcoming update!
+            </p>
+          </div>
+        )}
+
+        {/* 
+        BOT PLAY FORM COMMENTED OUT:
         {mode === 'bots' && (
           <>
             <div className={style.inputGroup}>
@@ -312,12 +337,9 @@ const Lobby = ({
             >
               Start Offline Game
             </button>
-            <p className={style.copyHint} style={{ marginTop: 12, textAlign: 'center' }}>
-              You'll play against {botCount} computer-controlled opponent{botCount > 1 ? 's' : ''} on this
-              device — no internet connection needed.
-            </p>
           </>
         )}
+        */}
 
         {(mode === 'create' || mode === 'join') && (
           <>

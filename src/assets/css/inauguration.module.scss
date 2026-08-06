@@ -1,0 +1,639 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;600&display=swap');
+
+/* ─── Wrapper ─────────────────────────────────────────────────── */
+.inaugWrap {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 60%, #3a0010 0%, #1a0505 55%, #0a0000 100%);
+  font-family: 'Inter', sans-serif;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Hide system cursor on curtain page */
+  cursor: none;
+}
+
+/* ─── Ready screen ────────────────────────────────────────────── */
+.readyScreen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: #000;
+  z-index: 100;
+  cursor: auto;
+}
+
+.readyGlow {
+  position: absolute;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(180,0,0,0.35) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: glowPulse 3s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes glowPulse {
+  0%,100% { transform: scale(1);    opacity: 0.7; }
+  50%     { transform: scale(1.15); opacity: 1; }
+}
+
+.readyLogo {
+  font-size: 72px;
+  animation: logoDrop 0.8s cubic-bezier(0.34,1.56,0.64,1) both 0.2s;
+  filter: drop-shadow(0 0 24px rgba(255,215,0,0.7));
+}
+@keyframes logoDrop {
+  from { transform: translateY(-50px) scale(0.5); opacity: 0; }
+  to   { transform: translateY(0)     scale(1);   opacity: 1; }
+}
+
+.readyTitle {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 5vw, 56px);
+  font-weight: 900;
+  color: #FFD700;
+  margin: 0;
+  letter-spacing: 3px;
+  text-shadow: 0 0 30px rgba(255,215,0,0.6);
+  animation: slideUpFade 0.8s ease both 0.4s;
+}
+.readySubtitle {
+  font-size: clamp(13px, 2vw, 17px);
+  color: rgba(255,200,120,0.75);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin: 0;
+  animation: slideUpFade 0.8s ease both 0.55s;
+}
+.readyBtn {
+  margin-top: 24px;
+  padding: 18px 52px;
+  font-size: clamp(15px, 2.2vw, 20px);
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 2px;
+  color: #0a0000;
+  background: linear-gradient(135deg, #FFE082, #FFD700, #FFA000);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 6px 32px rgba(255,160,0,0.5), 0 0 0 3px rgba(255,215,0,0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  animation: slideUpFade 0.8s ease both 0.7s;
+}
+.readyBtn:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 12px 40px rgba(255,160,0,0.7), 0 0 0 5px rgba(255,215,0,0.4); }
+
+.readyHint {
+  font-size: 13px;
+  color: rgba(255,200,120,0.5);
+  margin: 0;
+  animation: slideUpFade 0.8s ease both 0.9s;
+}
+
+/* ─── Intro slides ────────────────────────────────────────────── */
+.introWrap {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 90;
+  cursor: auto;
+  overflow: hidden;
+}
+
+/* Star field */
+.starField {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 25% 60%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 40% 25%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 55% 75%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 65% 40%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 75% 20%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 85% 65%, rgba(255,255,255,0.35) 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 35%, rgba(255,255,255,0.45) 0%, transparent 100%),
+    radial-gradient(1px 1px at 20% 85%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 48% 50%, rgba(255,215,0,0.3) 0%, transparent 100%);
+  animation: starTwinkle 4s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+@keyframes starTwinkle {
+  0%   { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+/* Thin accent bar */
+.introAccent {
+  position: absolute;
+  left: 10%; right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,215,0,0.6), transparent);
+  top: calc(50% + 60px);
+  transform: scaleX(0);
+  transition: transform 0.7s ease, opacity 0.5s ease;
+  opacity: 0;
+}
+.introAccent_in, .introAccent_hold {
+  transform: scaleX(1);
+  opacity: 1;
+}
+.introAccent_out {
+  transform: scaleX(0);
+  opacity: 0;
+}
+
+/* Slide container */
+.introSlide {
+  text-align: center;
+  padding: 0 40px;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22,1,0.36,1);
+}
+
+/* Fade states */
+.slide_in   { opacity: 0; transform: translateY(32px); }
+.slide_hold { opacity: 1; transform: translateY(0); }
+.slide_out  { opacity: 0; transform: translateY(-28px); transition: opacity 0.65s ease, transform 0.65s ease; }
+
+/* Slide text styles */
+.introMain {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(26px, 5.5vw, 64px);
+  font-weight: 700;
+  color: rgba(255,255,255,0.93);
+  margin: 0;
+  letter-spacing: 1px;
+  line-height: 1.2;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.8);
+}
+.introGold {
+  color: #FFD700 !important;
+  text-shadow: 0 0 30px rgba(255,215,0,0.5), 0 2px 20px rgba(0,0,0,0.8) !important;
+}
+.introItalic { font-style: italic; color: rgba(255,220,150,0.85) !important; }
+.introNames {
+  font-size: clamp(20px, 4vw, 48px) !important;
+  color: #FFD700 !important;
+  letter-spacing: 4px !important;
+  text-shadow: 0 0 20px rgba(255,215,0,0.5) !important;
+}
+.introSub {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(20px, 4vw, 46px);
+  font-weight: 900;
+  color: #FFD700;
+  margin: 0;
+  letter-spacing: 2px;
+  text-shadow: 0 0 28px rgba(255,215,0,0.6);
+}
+
+/* Progress dots */
+.introDots {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+}
+.introDot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+.introDotActive { background: #FFD700; transform: scale(1.4); }
+.introDotDone   { background: rgba(255,215,0,0.45); }
+
+/* Skip button */
+.skipBtn {
+  position: absolute;
+  top: 24px; right: 28px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.55);
+  font-size: 13px;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 1px;
+  padding: 8px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.skipBtn:hover { background: rgba(255,215,0,0.15); color: #FFD700; border-color: rgba(255,215,0,0.4); }
+
+/* ─── Custom scissor cursor ───────────────────────────────────── */
+.customCursor {
+  position: fixed;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-8px, -20px);
+  filter: drop-shadow(0 2px 8px rgba(255,215,0,0.7));
+  transition: filter 0.15s ease;
+}
+
+/* Blade open (snipping) — rotate upper blade up, lower down */
+.bladeOpen {
+  transform: rotate(-22deg);
+}
+.bladeClosed {
+  transform: rotate(0deg);
+}
+.bladeOpenLower {
+  transform: rotate(22deg);
+}
+.bladeClosedLower {
+  transform: rotate(0deg);
+}
+
+/* Cursor snip flash */
+.cursorSnip {
+  filter: drop-shadow(0 0 18px rgba(255,215,0,1));
+  animation: cursorSnipFlash 0.3s ease;
+}
+@keyframes cursorSnipFlash {
+  0%,100% { transform: translate(-8px,-20px) scale(1); }
+  50%      { transform: translate(-8px,-20px) scale(1.3) rotate(-10deg); }
+}
+
+/* ─── Fireworks canvas ────────────────────────────────────────── */
+.fireworkCanvas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* ─── Balloons ────────────────────────────────────────────────── */
+/* Side border balloons — above curtains (z-index 28 > curtain 20) */
+.balloonSide {
+  position: absolute;
+  animation: balloonSway 9s ease-in-out infinite alternate;
+  z-index: 28;
+  pointer-events: none;
+  will-change: transform;
+}
+
+@keyframes balloonSway {
+  0%   { transform: translateX(0) rotate(-3deg); }
+  50%  { transform: translateX(var(--sway, 10px)) rotate(3deg); }
+  100% { transform: translateX(0) rotate(-2deg); }
+}
+
+/* Bottom cluster balloons — float upward from the bottom */
+.balloonBottom {
+  position: absolute;
+  bottom: -10px;
+  animation: balloonRise 9s ease-in-out infinite;
+  z-index: 28;
+  pointer-events: none;
+  will-change: transform;
+}
+
+@keyframes balloonRise {
+  0%   { transform: translateY(0)    translateX(0);                opacity: 1; }
+  40%  { transform: translateY(-30px) translateX(var(--sway, 12px)); opacity: 1; }
+  80%  { transform: translateY(-60px) translateX(0);               opacity: 0.7; }
+  100% { transform: translateY(-100px) translateX(var(--sway, 12px)); opacity: 0; }
+}
+
+/* ─── Curtain panels ──────────────────────────────────────────── */
+.curtainLeft,
+.curtainRight {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 50%;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(0,0,0,0.07) 0px,
+      rgba(0,0,0,0.07) 5px,
+      transparent 5px,
+      transparent 28px
+    ),
+    linear-gradient(180deg, #900000 0%, #C0181A 35%, #8B0000 65%, #620000 100%);
+  box-shadow: inset 0 0 100px rgba(0,0,0,0.55);
+  transition: transform 1.3s cubic-bezier(0.77, 0, 0.18, 1);
+  z-index: 20;
+  /* Gentle floating wind */
+  animation: curtainWave 4s ease-in-out infinite;
+  overflow: hidden;
+}
+
+.curtainLeft  { left: 0;  transform-origin: left center; }
+.curtainRight { right: 0; transform-origin: right center; animation-direction: alternate-reverse; }
+
+/* Stop wind animation once cut */
+.slideLeft  { animation: none !important; transform: translateX(-105%); }
+.slideRight { animation: none !important; transform: translateX(105%); }
+
+@keyframes curtainWave {
+  0%,100% { transform: skewY(0deg) scaleX(1); }
+  30%     { transform: skewY(0.4deg) scaleX(1.004); }
+  70%     { transform: skewY(-0.3deg) scaleX(0.997); }
+}
+
+/* Velvet highlights */
+.curtainLeft::before,
+.curtainRight::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255,255,255,0.05) 10%,
+    transparent 20%
+  );
+  pointer-events: none;
+}
+
+/* Wind ripple lines */
+.windRipples {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0px,
+    rgba(255,255,255,0.03) 2px,
+    transparent 4px,
+    transparent 40px
+  );
+  animation: rippleScroll 3s linear infinite;
+  pointer-events: none;
+}
+@keyframes rippleScroll {
+  from { background-position-y: 0; }
+  to   { background-position-y: 40px; }
+}
+
+/* ─── Floating screen frame ───────────────────────────────────── */
+.floatingScreen {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 25;
+  animation: screenFloat 3.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes screenFloat {
+  0%,100% { transform: translate(-50%, -50%) rotate(-0.4deg); }
+  25%     { transform: translate(-50%, calc(-50% - 10px)) rotate(0.5deg); }
+  75%     { transform: translate(-50%, calc(-50% + 8px)) rotate(-0.6deg); }
+}
+
+.screenInner {
+  padding: 14px 32px;
+  background: rgba(255,215,0,0.12);
+  border: 2px solid rgba(255,215,0,0.5);
+  border-radius: 10px;
+  backdrop-filter: blur(4px);
+  box-shadow:
+    0 0 30px rgba(255,215,0,0.25),
+    inset 0 0 20px rgba(255,215,0,0.08);
+}
+
+.screenText {
+  color: rgba(255, 220, 150, 0.9);
+  font-size: clamp(12px, 2vw, 16px);
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow: 0 0 12px rgba(255,215,0,0.8);
+  animation: textPulse 2s ease-in-out infinite;
+}
+
+@keyframes textPulse {
+  0%,100% { opacity: 0.7; }
+  50%     { opacity: 1; }
+}
+
+/* ─── Ribbon strip ────────────────────────────────────────────── */
+.ribbon {
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  transform: translateY(-50%);
+  height: 86px;
+  display: flex;
+  align-items: center;
+  z-index: 30;
+  pointer-events: all;
+  cursor: none;
+  /* Hover lift effect on whole ribbon */
+  transition: filter 0.25s ease;
+}
+
+
+
+.ribbonHalf {
+  height: 100%;
+  width: 50%;
+  background: linear-gradient(180deg,
+    #FFE082 0%, #FFD700 25%, #FFA000 50%, #FFD700 75%, #FFE082 100%
+  );
+  box-shadow:
+    0 4px 24px rgba(255,215,0,0.65),
+    inset 0 3px 8px rgba(255,255,255,0.45),
+    inset 0 -3px 8px rgba(0,0,0,0.25);
+  position: relative;
+  transition: transform 0.85s cubic-bezier(0.77, 0, 0.18, 1),
+              opacity  0.4s ease 0.55s;
+  /* No animation — clean still ribbon */
+}
+
+.ribbonLeft  { border-radius: 4px 0 0 4px; transform-origin: left center; }
+.ribbonRight { border-radius: 0 4px 4px 0; transform-origin: right center; }
+
+/* Stitch line inside ribbon halves */
+.ribbonStitch {
+  position: absolute;
+  top: 50%;
+  left: 12px; right: 12px;
+  height: 0;
+  border-top: 2px dashed rgba(255,255,255,0.45);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+/* Ribbon top/bottom decorative scalloped borders */
+.ribbonHalf::before {
+  content: '';
+  position: absolute;
+  bottom: -6px; left: 0; right: 0;
+  height: 8px;
+  background: radial-gradient(circle at 50% 0%, #B8860B 60%, transparent 60%) 0 0 / 14px 8px repeat-x;
+  opacity: 0.7;
+}
+
+.ribbonHalf::after {
+  content: '';
+  position: absolute;
+  top: -6px; left: 0; right: 0;
+  height: 8px;
+  background: radial-gradient(circle at 50% 100%, #B8860B 60%, transparent 60%) 0 0 / 14px 8px repeat-x;
+  opacity: 0.7;
+}
+
+.ribbonHalfCutLeft  { animation: none !important; transform: translateX(-115%) rotate(-9deg); opacity: 0; }
+.ribbonHalfCutRight { animation: none !important; transform: translateX(115%) rotate(9deg);  opacity: 0; }
+
+/* ─── Rosette medallion center — static, no spin ──────────────────── */
+.ribbonRosette {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 41;
+  pointer-events: none;
+  filter: drop-shadow(0 0 10px rgba(255,215,0,0.85)) drop-shadow(0 2px 12px rgba(0,0,0,0.5));
+}
+
+
+
+/* ─── Welcome stage ───────────────────────────────────────────── */
+.welcomeStage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 40px 20px;
+  text-align: center;
+  z-index: 15;
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity 1s ease 0.15s, transform 1s cubic-bezier(0.34,1.56,0.64,1) 0.15s;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 90% 60% at 50% 50%, rgba(100,0,0,0.55) 0%, transparent 70%),
+    linear-gradient(180deg, #090000 0%, #190404 100%);
+  cursor: auto;
+}
+
+.welcomeVisible {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: all;
+}
+
+.crownIcon {
+  font-size: clamp(44px, 10vw, 88px);
+  animation: crownBounce 1.1s cubic-bezier(0.34,1.56,0.64,1) both 0.3s;
+  filter: drop-shadow(0 4px 22px rgba(255,215,0,0.85));
+}
+@keyframes crownBounce {
+  from { transform: translateY(-60px) scale(0.5); opacity: 0; }
+  to   { transform: translateY(0) scale(1);       opacity: 1; }
+}
+
+.welcomeTitle {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(22px, 4.5vw, 52px);
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.25;
+  text-shadow: 0 4px 24px rgba(255,215,0,0.5);
+  animation: slideUpFade 0.9s ease both 0.6s;
+  margin: 0;
+}
+
+.gameName {
+  background: linear-gradient(90deg, #FFD700, #FFA000, #FFE082, #FFD700);
+  background-size: 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 2.5s linear infinite;
+}
+@keyframes shimmer {
+  0%   { background-position: 0% 0; }
+  100% { background-position: 300% 0; }
+}
+
+.dividerLine {
+  width: clamp(120px, 30vw, 280px);
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #FFD700, transparent);
+  animation: slideUpFade 0.9s ease both 0.8s;
+}
+
+.gameSubtitle {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(24px, 6vw, 68px);
+  font-weight: 900;
+  color: #FFD700;
+  margin: 0;
+  animation: slideUpFade 0.9s ease both 0.9s;
+  text-shadow: 0 0 30px rgba(255,215,0,0.9), 0 0 60px rgba(255,160,0,0.5);
+}
+
+.heavyBusiness {
+  letter-spacing: 6px;
+  display: inline-block;
+  animation: letterPop 0.9s cubic-bezier(0.34,1.56,0.64,1) both 1.1s;
+}
+@keyframes letterPop {
+  from { transform: scale(0.5); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+.tagline {
+  font-size: clamp(13px, 2vw, 17px);
+  color: rgba(255, 215, 140, 0.8);
+  max-width: 460px;
+  line-height: 1.65;
+  margin: 0;
+  animation: slideUpFade 0.9s ease both 1.3s;
+}
+
+.playBtn {
+  margin-top: 10px;
+  padding: 16px 44px;
+  font-size: clamp(14px, 2vw, 17px);
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #1a0505;
+  background: linear-gradient(135deg, #FFE082 0%, #FFD700 45%, #FFA000 100%);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 6px 30px rgba(255,160,0,0.5), 0 0 0 3px rgba(255,215,0,0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  animation: slideUpFade 0.9s ease both 1.5s;
+}
+.playBtn:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 12px 40px rgba(255,160,0,0.7), 0 0 0 5px rgba(255,215,0,0.4);
+}
+
+@keyframes slideUpFade {
+  from { transform: translateY(30px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* ─── Mobile ──────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .ribbon { height: 54px; }
+  .playBtn { padding: 14px 32px; }
+  .heavyBusiness { letter-spacing: 3px; }
+}

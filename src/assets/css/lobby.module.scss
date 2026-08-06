@@ -12,10 +12,64 @@
   font-family: var(--hero-body);
   padding: 20px;
   position: relative;
+  overflow: hidden;
+}
+
+.lobbyAmbientOrb1 {
+  position: absolute;
+  top: 10%;
+  left: 8%;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.2) 0%, transparent 70%);
+  filter: blur(60px);
+  pointer-events: none;
+  animation: orbPulse 7s ease-in-out infinite alternate;
+}
+
+.lobbyAmbientOrb2 {
+  position: absolute;
+  bottom: 8%;
+  right: 10%;
+  width: 450px;
+  height: 450px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139, 30, 27, 0.3) 0%, transparent 70%);
+  filter: blur(60px);
+  pointer-events: none;
+  animation: orbPulse 9s ease-in-out infinite alternate-reverse;
+}
+
+.floatingParticlesField {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.particle {
+  position: absolute;
+  font-size: 1.8rem;
+  opacity: 0.65;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.6));
+  animation: particleFloat 8s ease-in-out infinite;
+}
+
+@keyframes particleFloat {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg) scale(1);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translateY(-24px) rotate(12deg) scale(1.15);
+    opacity: 0.9;
+  }
 }
 
 .lobbyCard {
   position: relative;
+  z-index: 2;
   background: linear-gradient(160deg, rgba(74, 12, 10, 0.75), rgba(43, 6, 5, 0.88));
   backdrop-filter: blur(20px);
   border: 1px solid rgba(212, 175, 55, 0.4);
@@ -25,6 +79,7 @@
   max-width: 540px;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 215, 0, 0.25);
   overflow: hidden;
+  animation: cardAura 4s ease-in-out infinite alternate;
 
   &::before {
     content: '';
@@ -138,9 +193,58 @@
 }
 
 .modeBtnActive {
+  background: linear-gradient(155deg, #d4af37, #c59b27);
+  color: #2b0605;
   border-color: #ffd700;
-  background: linear-gradient(135deg, rgba(178, 34, 34, 0.6) 0%, rgba(212, 175, 55, 0.35) 100%);
-  box-shadow: 0 0 16px rgba(212, 175, 55, 0.4);
+  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.4);
+  font-weight: 800;
+}
+
+.comingSoonBadge {
+  font-size: 0.62rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  background: #e74c3c;
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 999px;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+
+.comingSoonCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: rgba(43, 6, 5, 0.65);
+  border: 1.5px dashed rgba(212, 175, 55, 0.5);
+  border-radius: 16px;
+  padding: 28px 20px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  color: #fff;
+  animation: fadeIn 300ms ease;
+}
+
+.comingSoonIcon {
+  font-size: 2.4rem;
+  margin-bottom: 8px;
+}
+
+.comingSoonTitle {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #ffd700;
+  margin-bottom: 8px;
+}
+
+.comingSoonText {
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.5;
+  max-width: 400px;
 }
 
 .inputGroup {
@@ -391,6 +495,15 @@
 @keyframes pulse {
   0%, 100% { opacity: 0.35; }
   50% { opacity: 0.8; }
+}
+
+@keyframes cardAura {
+  0% {
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 215, 0, 0.25), 0 0 20px rgba(212, 175, 55, 0.15);
+  }
+  100% {
+    box-shadow: 0 35px 90px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 215, 0, 0.5), 0 0 35px rgba(212, 175, 55, 0.35);
+  }
 }
 
 .error {

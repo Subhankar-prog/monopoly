@@ -1,26 +1,31 @@
 import style from '../../../assets/css/home/main.module.scss';
 
 const FLOATING_TILES = [
-  { top: '14%', left: '7%', rotate: -14, color: '#c1483f', delay: '0s' },
-  { top: '68%', left: '4%', rotate: 10, color: '#226042', delay: '1.1s' },
-  { top: '20%', right: '6%', rotate: 12, color: '#d9a94f', delay: '0.6s' },
-  { top: '62%', right: '9%', rotate: -9, color: '#29618f', delay: '1.7s' },
-  { top: '85%', left: '22%', rotate: 6, color: '#8a4fbf', delay: '2.2s' },
+  { top: '14%', left: '7%', rotate: -14, color: '#c1483f', delay: '0s', icon: '🏠' },
+  { top: '68%', left: '4%', rotate: 10, color: '#226042', delay: '1.1s', icon: '🪙' },
+  { top: '18%', right: '6%', rotate: 12, color: '#d9a94f', delay: '0.6s', icon: '🎲' },
+  { top: '62%', right: '9%', rotate: -9, color: '#29618f', delay: '1.7s', icon: '🪔' },
+  { top: '82%', left: '22%', rotate: 6, color: '#8a4fbf', delay: '2.2s', icon: '👑' },
+  { top: '38%', right: '15%', rotate: -18, color: '#e74c3c', delay: '2.8s', icon: '🏨' },
+  { top: '48%', left: '12%', rotate: 15, color: '#2ecc71', delay: '3.4s', icon: '🃏' },
 ];
 
 const STEPS = [
   {
     n: '01',
+    icon: '🎲',
     title: 'Roll & move',
     body: 'Two dice, real-time, no waiting around — the board updates live for everyone at the table.',
   },
   {
     n: '02',
+    icon: '🏢',
     title: 'Buy & build',
     body: 'Claim property as you land on it, corner a color group, then put up houses and hotels.',
   },
   {
     n: '03',
+    icon: '🏆',
     title: 'Bankrupt rivals',
     body: 'Collect rent, strike trades, and force the table into debt — last player solvent wins.',
   },
@@ -30,6 +35,10 @@ const Main = () => {
   return (
     <div className={style.main}>
       <section className={style.hero}>
+        {/* Ambient Glowing Background Orbs */}
+        <div className={style.ambientOrb1} aria-hidden="true" />
+        <div className={style.ambientOrb2} aria-hidden="true" />
+
         {/* Odisha Heritage Konark Sun Wheel Watermark */}
         <div className={style.konarkWatermark} aria-hidden="true">
           <svg viewBox="0 0 200 200" className={style.konarkWheelSvg}>
@@ -65,8 +74,8 @@ const Main = () => {
               }}
             >
               <span className={style.floatingTileBand} style={{ background: t.color }} />
+              <span className={style.floatingIcon}>{t.icon}</span>
               <span className={style.floatingTileLine} />
-              <span className={style.floatingTileLineShort} />
             </div>
           ))}
         </div>
@@ -86,10 +95,10 @@ const Main = () => {
           </p>
           <div className={style.ctaRow}>
             <a href="/lobby" className={style.btnPrimary}>
-              Play Now
+              ✨ Play Now
             </a>
             <a href="#how-it-works" className={style.btnGhost}>
-              How it works
+              📜 How it works
             </a>
           </div>
           <div className={style.statRow}>
@@ -116,7 +125,10 @@ const Main = () => {
         <div className={style.stepsRow}>
           {STEPS.map(step => (
             <div className={style.step} key={step.n}>
-              <span className={style.stepNumber}>{step.n}</span>
+              <div className={style.stepHeader}>
+                <span className={style.stepNumber}>{step.n}</span>
+                <span className={style.stepIcon}>{step.icon}</span>
+              </div>
               <h3 className={style.stepTitle}>{step.title}</h3>
               <p className={style.stepBody}>{step.body}</p>
             </div>
@@ -131,7 +143,7 @@ const Main = () => {
           waiting.
         </p>
         <a href="/lobby" className={style.btnPrimary}>
-          Play Now
+          🚀 Play Now
         </a>
       </section>
     </div>

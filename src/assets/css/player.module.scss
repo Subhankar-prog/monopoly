@@ -1,6 +1,6 @@
 .player {
-  width: 32px;
-  height: 40px;
+  width: 24px;
+  height: 30px;
   position: absolute;
   transition:
     top 0.2s ease-in-out,
@@ -12,14 +12,22 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.45));
+  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.45));
   cursor: pointer;
-  z-index: 10;
+  z-index: 1000 !important;
+  pointer-events: none;
 
   &:hover {
     transform: scale(1.2) translateY(-4px);
-    z-index: 20;
+    z-index: 1005 !important;
     filter: drop-shadow(0 8px 14px rgba(212, 175, 55, 0.7));
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .player {
+    width: 18px;
+    height: 22px;
   }
 }
 
