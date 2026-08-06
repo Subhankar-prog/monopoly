@@ -11,7 +11,7 @@ const SLIDES = [
   { main: 'Welcome to', sub: null, voice: 'Welcome  too', duration: 2600 },
   { main: 'The Inaguration of', sub: null, voice: 'The  Inauguration  of', duration: 2800 },
   { main: 'Most Awaited Monopoly Game', sub: 'of Odisha', voice: 'The most awaited  Monopoly game  of  O-dee-sha', duration: 3400, gold: true },
-  { main: 'Developed By', sub: 'Subhankar', voice: 'Developed  by  Subhhon-kar', duration: 3400, gold: true },
+  { main: 'Developed By', sub: 'Subhankar', voice: 'Developed  by  Subhha-kar', duration: 3400, gold: true },
   { main: 'Special Thanks to', sub: null, voice: 'Special  thanks  to', duration: 2000 },
   { main: 'BHAU · ROCKY · PINTU · BEN10', sub: null, voice: 'Bhaaou...  Roki ...  Pintuu ...  Ben  Ten', duration: 4000, names: true },
   { main: 'Grab your popcorn...', sub: null, voice: 'Grab  your  popcorn', duration: 2800, italic: true },
@@ -32,20 +32,20 @@ function speak(text: string) {
     if (ss.speaking) ss.cancel();
 
     const utt = new SpeechSynthesisUtterance(text);
-    utt.rate   = 0.85;
-    utt.pitch  = 1.05;
+    utt.rate = 0.85;
+    utt.pitch = 1.05;
     utt.volume = 1;
 
     // Pick voice — browser already has them cached by now
     const voices = ss.getVoices();
     const voice =
-      voices.find(v => /heera/i.test(v.name))               ?? // Indian female (Windows)
-      voices.find(v => /ravi/i.test(v.name))                ?? // Indian male  (Windows)
-      voices.find(v => v.lang === 'en-IN')                   ?? // Any Indian English
+      voices.find(v => /heera/i.test(v.name)) ?? // Indian female (Windows)
+      voices.find(v => /ravi/i.test(v.name)) ?? // Indian male  (Windows)
+      voices.find(v => v.lang === 'en-IN') ?? // Any Indian English
       voices.find(v => /google uk english female/i.test(v.name)) ?? // Google female GB
       voices.find(v => v.lang.startsWith('en') && /female/i.test(v.name)) ??
-      voices.find(v => v.lang === 'en-GB')                   ??
-      voices.find(v => v.lang.startsWith('en'))              ??
+      voices.find(v => v.lang === 'en-GB') ??
+      voices.find(v => v.lang.startsWith('en')) ??
       null;
     if (voice) utt.voice = voice;
 
