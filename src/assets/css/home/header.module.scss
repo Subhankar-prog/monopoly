@@ -1,12 +1,14 @@
 .header {
   width: 100%;
-  padding: 8px 0;
+  padding: 0;
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(7, 26, 21, 0.55);
+  background: rgba(43, 6, 5, 0.88);
   backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(217, 169, 79, 0.15);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
 }
 .headerInner {
   display: flex;
@@ -14,11 +16,22 @@
   justify-content: space-between;
 }
 .logo {
-  height: 34px;
+  height: 84px;
+  display: flex;
+  align-items: center;
 }
-.logo img {
-  height: 100%;
+.headerLogoImg {
+  height: 78px;
   width: auto;
+  max-width: 360px;
+  object-fit: contain;
+  mix-blend-mode: lighten;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.7));
+  transition: transform 180ms ease, filter 180ms ease;
+}
+.headerLogoImg:hover {
+  transform: scale(1.05);
+  filter: drop-shadow(0 6px 14px rgba(212, 175, 55, 0.4));
 }
 .navCta {
   font-family: var(--hero-body);

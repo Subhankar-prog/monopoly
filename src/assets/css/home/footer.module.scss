@@ -1,17 +1,120 @@
 .footerContainer {
-  background: rgba(5, 15, 12, 0.6);
-  border-top: 1px solid rgba(217, 169, 79, 0.12);
-}
-.footer {
+  background: rgba(24, 3, 2, 0.96);
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 56px;
+  flex-direction: column;
+  box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.5);
+  position: relative;
+  z-index: 50;
 }
-.copyright {
+
+.footerInner {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 16px 32px;
+  min-height: 64px;
+  gap: 20px;
+  width: 100%;
+}
+
+.brandCol {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-self: start;
+}
+
+.brandTitle {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: #ffd700;
+  letter-spacing: 0.03em;
+}
+
+.editionBadge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #faf3e0;
+  background: rgba(139, 30, 27, 0.7);
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+}
+
+.creditCol {
+  font-size: 0.88rem;
+  color: #faf3e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  justify-self: center;
   text-align: center;
-  font-family: var(--hero-body);
-  color: var(--ivory-200);
-  opacity: 0.6;
-  font-size: 12px;
+  white-space: nowrap;
+}
+
+.contactCol {
+  display: flex;
+  align-items: center;
+  justify-self: end;
+}
+
+.contactLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  padding: 6px 14px;
+  border-radius: 10px;
+  color: #faf3e0;
+  font-size: 0.84rem;
+  text-decoration: none;
+  transition: background 150ms ease, border-color 150ms ease, transform 150ms ease;
+
+  &:hover {
+    background: rgba(212, 175, 55, 0.15);
+    border-color: #ffd700;
+    transform: translateY(-1px);
+    color: #fff;
+  }
+}
+
+.phoneIcon {
+  font-size: 0.95rem;
+}
+
+.heart {
+  display: inline-block;
+  color: #ff4d4d;
+  animation: heartBeat 1.4s infinite ease-in-out;
+  margin: 0 2px;
+}
+
+@keyframes heartBeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.25);
+  }
+}
+
+@media screen and (max-width: 820px) {
+  .footerInner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 14px 16px;
+    gap: 12px;
+  }
+  .brandCol,
+  .creditCol,
+  .contactCol {
+    justify-self: center;
+    justify-content: center;
+  }
 }

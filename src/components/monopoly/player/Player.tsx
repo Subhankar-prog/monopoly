@@ -36,26 +36,23 @@ function Player({
   network,
   setCurrentCard,
   showNotification,
-}) {
-  const playerRef = useRef(null); // Player <div> reference
-  const isMountedRef = useRef(false); // To check if the component has mounted or not
+}: any) {
+  const playerRef = useRef(null);
+  const isMountedRef = useRef(false);
   const playerMoveAudio = useMemo(() => new Audio(audio1), []);
   const siteDataRef = useRef(siteData);
   const positionsRef = useRef(board.positions);
   const playersDataRef = useRef(playersData);
-  const currentPlayerRef = useRef(null);
+  const currentPlayerRef = useRef<any>(null);
   const diceSumRef = useRef(diceSum);
   const isMoving = playersData.players[currentPlayerId].isMoving;
 
-  // To show appropriate modal or do appropriate action
   const appropriateAction = useCallback(() => {
     const currentSiteId = currentPlayerRef.current.site;
     const currentSite = siteDataRef.current.sites[currentSiteId];
     const { activePlayer, totalPlayers } = playersDataRef.current;
 
     if (network.isMultiplayer) {
-      // In multiplayer, server already handled money changes (rent, tax, jail, chest/chance)
-      // via playerFinishedMoving + SYNC_GAME_STATE. We only need to show modals locally.
       if (
         currentSite.type === cardTypes.SITE ||
         currentSite.type === cardTypes.REALM_RAILS ||
@@ -65,14 +62,8 @@ function Player({
           if (currentSite.sellingPrice <= currentPlayerRef.current.money) {
             setShowModal(true, modalTypes.BUY_CARD);
           }
-          // If unaffordable, the server starts an auction and every client
-          // (including this one) picks it up via AuctionWatcher, which is
-          // always mounted and reacts to the synced `currentAuction` state —
-          // that way ALL players see the auction, not just whoever landed.
         }
-        // If already bought (rent case), server already set isDone via SYNC
       }
-      // For special/tax/chest/chance — server already handled everything via SYNC
     } else {
       appropriateActionHelper(
         currentSite,
@@ -102,9 +93,8 @@ function Player({
     showNotification,
   ]);
 
-  // To move player when there are multple turns
   const setPlayerPositionRecursive = useCallback(
-    async path => {
+    async (path: any) => {
       setPlayerPositionRecursiveHelper(
         path,
         positionsRef.current,
@@ -120,8 +110,6 @@ function Player({
     [setIsMoving, currentPlayerId, playerMoveAudio]
   );
 
-  // Update active players position in redux on dice roll
-  // In multiplayer: server already calculated position via SYNC_GAME_STATE, skip local calc
   useEffect(() => {
     if (
       isMountedRef.current &&
@@ -130,19 +118,13 @@ function Player({
       diceSum !== null &&
       diceSum !== undefined
     ) {
-      console.log(
-        'useEffect1 ID(Update activePlayer postion in redux) Player' +
-          currentPlayerId
-      );
       const currentSite = (currentPlayerRef.current.site + diceSum) % 40;
       movePlayer(currentPlayerId, currentSite, directions.FORWARD, true);
     }
-  }, [diceSum, currentPlayerId, movePlayer, setDiceSumCalledCount, network.isMultiplayer]); // Adding 'setDiceSumCalledCount' because if previous 'diceSUm' is equal to current 'diceSum' it does not get called
+  }, [diceSum, currentPlayerId, movePlayer, setDiceSumCalledCount, network.isMultiplayer]);
 
-  // To move player(actually move player on board in UI[Brower Window])
   useEffect(() => {
     if (isMoving || isMountedRef.current === false) {
-      // In multiplayer, use props directly (refs may be stale since SYNC updates all at once)
       const playerData = network.isMultiplayer
         ? playersData.players[currentPlayerId]
         : playersDataRef.current.players[currentPlayerId];
@@ -152,24 +134,19 @@ function Player({
         playerData.site,
         playerData.direction
       );
-      console.log(`useEffect2(Move Player In UI) Player${currentPlayerId}`,
-        'from', playerData.previousSite, 'to', playerData.site, 'path', path);
       setPlayerPositionRecursive(path);
     }
   }, [setPlayerPositionRecursive, currentPlayerId, isMoving, network.isMultiplayer, playersData]);
 
   const hasMovedRef = useRef(false);
 
-  // Track when movement starts
   useEffect(() => {
     if (isMoving) {
       hasMovedRef.current = true;
     }
   }, [isMoving]);
 
-  // Show Appropriate modal or do appropriate action
   useEffect(() => {
-    // In multiplayer, use props for activePlayer check (refs may be stale)
     const activePlayer = network.isMultiplayer
       ? playersData.activePlayer
       : playersDataRef.current.activePlayer;
@@ -180,23 +157,14 @@ function Player({
       hasMovedRef.current &&
       activePlayer === currentPlayerId
     ) {
-      console.log(`useEffect3(Appropriate action) Player${currentPlayerId}`);
-      hasMovedRef.current = false; // Reset hasMovedRef
+      hasMovedRef.current = false;
 
       if (network.isMultiplayer && network.roomCode) {
-        // Only the active player's OWN client should emit & take action
         if (network.myPlayerId === currentPlayerId) {
           emitPlayerFinishedMoving(network.roomCode)
-            .then((res) => {
-              console.log('[Multiplayer] Finished moving, actionRequired:', res.actionRequired);
-              appropriateAction();
-            })
-            .catch((err) => {
-              console.error('[Multiplayer] Failed to emit finished moving:', err);
-              appropriateAction();
-            });
+            .then(() => appropriateAction())
+            .catch(() => appropriateAction());
         }
-        // Non-active clients do nothing — server SYNC handles their state
       } else {
         appropriateAction();
       }
@@ -205,7 +173,6 @@ function Player({
     }
   }, [isMoving, appropriateAction, currentPlayerId, network.isMultiplayer, network.roomCode, network.myPlayerId, playersData.activePlayer]);
 
-  // To update playersDataRef and siteDateRef
   useEffect(() => {
     siteDataRef.current = siteData;
     playersDataRef.current = playersData;
@@ -213,15 +180,80 @@ function Player({
   }, [playersData, siteData, diceSum]);
 
   const playerState = playersData.players[currentPlayerId];
-  const initial = playerState?.name ? playerState.name.substring(0, 2).toUpperCase() : currentPlayerId;
+  const initial = playerState?.name ? playerState.name.substring(0, 2).toUpperCase() : `${currentPlayerId + 1}`;
+  const isActive = playersData.activePlayer === currentPlayerId;
 
   return (
-    <div className={`${style.player} player-${color}`} ref={playerRef}>
-      {initial}
+    <div className={`${style.player} player-${color} ${isActive ? style.activeToken : ''}`} ref={playerRef}>
+      <RenderTokenShape playerId={currentPlayerId} initial={initial} colorName={color} isActive={isActive} />
     </div>
   );
 }
-const mapStateToProps = store => {
+
+const COLOR_MAP: Record<string, string> = {
+  red: '#C13828',
+  yellow: '#D4AF37',
+  blue: '#1F618D',
+  green: '#1E8449',
+  orange: '#D35400',
+  pink: '#8E44AD',
+};
+
+function RenderTokenShape({ playerId, initial, colorName, isActive }: { playerId: number; initial: string; colorName: string; isActive: boolean }) {
+  const mainColor = COLOR_MAP[colorName] || '#C13828';
+
+  return (
+    <svg viewBox="0 0 40 50" className={style.tokenSvg}>
+      <defs>
+        <linearGradient id={`manGrad-${playerId}`} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#FFF4CC" />
+          <stop offset="30%" stopColor={mainColor} />
+          <stop offset="100%" stopColor="#240302" />
+        </linearGradient>
+        <linearGradient id={`goldTrim-${playerId}`} x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#FFE89C" />
+          <stop offset="50%" stopColor="#D4AF37" />
+          <stop offset="100%" stopColor="#8A5A10" />
+        </linearGradient>
+        <filter id={`shadow-${playerId}`} x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="0" dy="2" stdDeviation="1.5" floodColor="#000" floodOpacity="0.6" />
+        </filter>
+      </defs>
+
+      {/* Pedestal Base */}
+      <ellipse cx="20" cy="45" rx="16" ry="4.5" fill={`url(#goldTrim-${playerId})`} />
+      <ellipse cx="20" cy="43" rx="14" ry="3.8" fill={`url(#manGrad-${playerId})`} stroke="#FFE89C" strokeWidth="0.8" />
+
+      {/* Standing Legs */}
+      <path d="M14,31 L15,42 L18,42 L18,31 Z" fill={`url(#manGrad-${playerId})`} stroke="#8A5A10" strokeWidth="0.5" />
+      <path d="M22,31 L22,42 L25,42 L26,31 Z" fill={`url(#manGrad-${playerId})`} stroke="#8A5A10" strokeWidth="0.5" />
+
+      {/* Torso / Kurta Coat */}
+      <path
+        d="M11,18 C11,14 15,12 20,12 C25,12 29,14 29,18 L27,32 L13,32 Z"
+        fill={`url(#manGrad-${playerId})`}
+        stroke={`url(#goldTrim-${playerId})`}
+        strokeWidth="1.5"
+        filter={`url(#shadow-${playerId})`}
+      />
+
+      {/* Sambalpuri Sash / Shoulder Collar */}
+      <path d="M11,18 C14,16 26,16 29,18 C28,21 12,21 11,18 Z" fill={`url(#goldTrim-${playerId})`} />
+
+      {/* Head / Turban Cap */}
+      <circle cx="20" cy="7.5" r="5.8" fill={`url(#manGrad-${playerId})`} stroke={`url(#goldTrim-${playerId})`} strokeWidth="1.4" />
+      <path d="M15,6.5 C17,4.5 23,4.5 25,6.5" stroke="#FFE89C" strokeWidth="1" fill="none" />
+
+      {/* Initial Badge on Torso */}
+      <circle cx="20" cy="24" r="5.2" fill="#180302" stroke="#FFD700" strokeWidth="1" />
+      <text x="20" y="24.8" className={style.tokenLabel}>
+        {initial}
+      </text>
+    </svg>
+  );
+}
+
+const mapStateToProps = (store: any) => {
   return {
     playersData: store.playersData,
     diceSum: store.dice.diceSum,
@@ -233,21 +265,21 @@ const mapStateToProps = store => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch: any) => {
   return {
-    movePlayer: (playerId, currentSite, direction, suppressNotification) =>
+    movePlayer: (playerId: any, currentSite: any, direction: any, suppressNotification: any) =>
       dispatch(movePlayer(playerId, currentSite, direction, suppressNotification)),
-    setShowModal: (showModal, currentModal) =>
+    setShowModal: (showModal: any, currentModal: any) =>
       dispatch(setShowModal(showModal, currentModal)),
-    setIsDone: isDone => dispatch(board.setIsDone(isDone)),
-    debitPlayerMoney: (playerId, amount) =>
+    setIsDone: (isDone: any) => dispatch(board.setIsDone(isDone)),
+    debitPlayerMoney: (playerId: any, amount: any) =>
       dispatch(debitPlayerMoney(playerId, amount)),
-    creditPlayerMoney: (playerId, amount) =>
+    creditPlayerMoney: (playerId: any, amount: any) =>
       dispatch(creditPlayerMoney(playerId, amount)),
-    setIsMoving: (playerId, isMoving) =>
+    setIsMoving: (playerId: any, isMoving: any) =>
       dispatch(setIsMoving(playerId, isMoving)),
-    setCurrentCard: cardData => dispatch(setCurrentCard(cardData)),
-    showNotification: data => dispatch(showNotification(data)),
+    setCurrentCard: (cardData: any) => dispatch(setCurrentCard(cardData)),
+    showNotification: (data: any) => dispatch(showNotification(data)),
   };
 };
 

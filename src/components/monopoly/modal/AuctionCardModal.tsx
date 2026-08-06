@@ -29,117 +29,93 @@ const AuctionCardModal = ({
   const isMultiplayer = network.isMultiplayer;
 
   // ── Local (single-player / vs bots) auction state ────────────────────────
-  const [playersFoldStatus, setPlayersFoldStatus] = useState(
+  const [playersFoldStatus, setPlayersFoldStatus] = useState<boolean[]>(
     Array(totalPlayers).fill(false)
   );
-  const [biddingHistory, setBiddingHistory] = useState([]);
-  const [activeBidder, setActiveBidder] = useState(activePlayer);
-  const [lastBid, setLastBid] = useState({
+  const [biddingHistory, setBiddingHistory] = useState<string[]>([]);
+  const [activeBidder, setActiveBidder] = useState<number>(activePlayer);
+  const [lastBid, setLastBid] = useState<{ playerId: number | null; bidAmount: number }>({
     playerId: null,
     bidAmount: 0,
   });
-  const [currentBidAmount, setCurrentBidAmount] = useState(1);
+  const [currentBidAmount, setCurrentBidAmount] = useState<number>(1);
 
-  const genBiddingHistory = (playerId, action) => {
-    let statement = '';
-    if (action === BID)
-      statement = `${players[playerId]?.name || `Player ${playerId + 1}`} bids $${currentBidAmount}`;
-    else if (action === FOLD) statement = `${players[playerId]?.name || `Player ${playerId + 1}`} folded`;
-    setBiddingHistory(previousHistory => {
-      return [...previousHistory, statement];
-    });
-  };
-  const onBid = () => {
-    const isValid = validateBid();
-    if (isValid) {
-      setLastBid({
-        playerId: activeBidder,
-        bidAmount: currentBidAmount,
-      });
-      genBiddingHistory(activeBidder, BID);
-      setCurrentBidAmountHelper(currentBidAmount + 1);
-      const playersWhoCanBid = getPlayersWhoCanBid(activeBidder, BID);
-      setActiveBidderHelper(playersWhoCanBid);
-    }
-  };
-
-  const onFold = () => {
-    genBiddingHistory(activeBidder, FOLD);
-    const playersWhoCanBid = getPlayersWhoCanBid(activeBidder, FOLD);
-    setActiveBidderHelper(playersWhoCanBid);
-  };
-
-  // Called When Bid Amount Changes
-  const onBidAmountChange = e => {
-    setCurrentBidAmountHelper(e.target.value);
-  };
-
-  // To Validate bid amount e.g., to ensure bid amount is greater than existing bid and less than the money user currenly have
-  const validateBid = () => {
-    if (
-      currentBidAmount > lastBid.bidAmount &&
-      currentBidAmount <= players[activeBidder].money
-    )
-      return true;
-    else {
+  // Sync input value whenever high bid changes or active bidder changes
+  useEffect(() => {
+    if (!isMultiplayer) {
       setCurrentBidAmount(lastBid.bidAmount + 1);
-      return false;
     }
+  }, [activeBidder, lastBid.bidAmount, isMultiplayer]);
+
+  const addBiddingHistory = (playerId: number, action: string, amount?: number) => {
+    const name = players[playerId]?.name || `Player ${playerId + 1}`;
+    const statement = action === BID ? `${name} bids $${amount}` : `${name} folded`;
+    setBiddingHistory(prev => [...prev, statement]);
   };
 
-  // To ensure bid amount is of int type
-  const setCurrentBidAmountHelper = bidAmount => {
-    setCurrentBidAmount(parseInt(bidAmount));
+  const getUnfoldedPlayers = (folds = playersFoldStatus) => {
+    const list: number[] = [];
+    for (let i = 0; i < totalPlayers; i++) {
+      if (!folds[i] && players[i] && players[i].money > 0) {
+        list.push(i);
+      }
+    }
+    return list;
   };
 
-  // Set active bidder helper
-  const setActiveBidderHelper = playersWhoCanBid => {
-    if (playersWhoCanBid.length === 1) {
-      wonAuctionLocal(playersWhoCanBid[0], currentBidAmount);
-    } else if (playersWhoCanBid.length === 0) {
-      if (lastBid.playerId !== null) {
-        wonAuctionLocal(lastBid.playerId, lastBid.bidAmount);
+  const advanceLocalAuction = (nextFolds: boolean[], newLastBid: { playerId: number | null; bidAmount: number }) => {
+    const activeList = getUnfoldedPlayers(nextFolds);
+
+    if (activeList.length === 0) {
+      if (newLastBid.playerId !== null) {
+        wonAuctionLocal(newLastBid.playerId, newLastBid.bidAmount);
       } else {
         closeAuctionUnsold();
       }
-    } else {
-      const nextBidder = getNextBidder(playersWhoCanBid);
-      setActiveBidder(nextBidder);
-    }
-  };
-
-  const getNextBidder = playersWhoCanBid => {
-    for (let i = 1; i < totalPlayers; i++) {
-      const next = (activeBidder + i) % totalPlayers;
-      if (playersWhoCanBid.indexOf(next) !== -1) return next;
-    }
-  };
-
-  const getPlayersWhoCanBid = (playerId, action) => {
-    const _playersFoldStatus = [...playersFoldStatus];
-    const playersWhoCanBid = [];
-
-    if (action === FOLD) _playersFoldStatus[playerId] = true;
-
-    for (let playerId = 0; playerId < totalPlayers; playerId++) {
-      if (!checkIfPlayerCanBid(playerId, _playersFoldStatus)) {
-        _playersFoldStatus[playerId] = true;
+    } else if (activeList.length === 1) {
+      // If only 1 player remains and they are already the high bidder, they win!
+      if (newLastBid.playerId === activeList[0]) {
+        wonAuctionLocal(newLastBid.playerId, newLastBid.bidAmount);
       } else {
-        playersWhoCanBid.push(playerId);
+        // High bidder hasn't been established yet (e.g. everyone folded before them)
+        // Give them a turn to bid or fold
+        setActiveBidder(activeList[0]);
       }
+    } else {
+      // Move to next player in activeList after current activeBidder
+      let nextIndex = activeList.find(id => id > activeBidder);
+      if (nextIndex === undefined) nextIndex = activeList[0];
+      setActiveBidder(nextIndex);
     }
-    setPlayersFoldStatus(_playersFoldStatus);
-    return playersWhoCanBid;
   };
-  const checkIfPlayerCanBid = (playerId, _playersFoldStatus) => {
-    if (
-      _playersFoldStatus[playerId] === false &&
-      players[playerId].money > currentBidAmount
-    )
-      return true;
-    else return false;
+
+  const onBid = () => {
+    const bidVal = Number(currentBidAmount);
+    if (!bidVal || bidVal <= lastBid.bidAmount || bidVal > (players[activeBidder]?.money || 0)) {
+      setCurrentBidAmount(lastBid.bidAmount + 1);
+      return;
+    }
+
+    const newLastBid = { playerId: activeBidder, bidAmount: bidVal };
+    setLastBid(newLastBid);
+    addBiddingHistory(activeBidder, BID, bidVal);
+    advanceLocalAuction(playersFoldStatus, newLastBid);
   };
-  const wonAuctionLocal = (playerId, amount) => {
+
+  const onFold = () => {
+    const nextFolds = [...playersFoldStatus];
+    nextFolds[activeBidder] = true;
+    setPlayersFoldStatus(nextFolds);
+    addBiddingHistory(activeBidder, FOLD);
+    advanceLocalAuction(nextFolds, lastBid);
+  };
+
+  const onBidAmountChange = (e: any) => {
+    const val = parseInt(e.target.value, 10);
+    setCurrentBidAmount(isNaN(val) ? lastBid.bidAmount + 1 : val);
+  };
+
+  const wonAuctionLocal = (playerId: number, amount: number) => {
     debitPlayerMoney(playerId, amount);
     buySite(playerId, sites[card]);
     setIsDone(true);
@@ -151,12 +127,8 @@ const AuctionCardModal = ({
     setShowModal(false, null);
   };
 
-  // If it's a bot's turn to act in this local hotseat auction, fold for
-  // them automatically after a short delay — bots never win auctions, but
-  // this keeps the auction from freezing waiting on a click that never
-  // comes. (Real bidding logic only matters between humans; a bot always
-  // folding is a deliberate, honest simplification, not a hidden strategy.)
-  const botFoldTimerRef = useRef(null);
+  // Bot auto-fold timer for local auction
+  const botFoldTimerRef = useRef<any>(null);
   useEffect(() => {
     if (isMultiplayer) return;
     if (!players[activeBidder]?.isBot) return;
@@ -165,23 +137,31 @@ const AuctionCardModal = ({
     }, 700);
     return () => clearTimeout(botFoldTimerRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeBidder, isMultiplayer]);
+  }, [activeBidder, isMultiplayer, playersFoldStatus]);
 
-  // ── Multiplayer bid/fold — validated server-side, just emit and wait ────
+  // ── Multiplayer bid/fold ─────────────────────────────────────────────────
   const [mpBidAmount, setMpBidAmount] = useState(1);
   const [busy, setBusy] = useState(false);
 
+  useEffect(() => {
+    if (isMultiplayer && currentAuction) {
+      setMpBidAmount(currentAuction.currentBid + 1);
+    }
+  }, [currentAuction?.currentBid, isMultiplayer, currentAuction]);
+
   const doPlaceBid = async () => {
-    if (busy) return;
+    if (busy || !currentAuction) return;
     setBusy(true);
+    const targetBid = Math.max(mpBidAmount, currentAuction.currentBid + 1);
     try {
-      await emitPlaceBid(network.roomCode, mpBidAmount);
+      await emitPlaceBid(network.roomCode, targetBid);
     } catch (err) {
       console.error('[Auction] bid failed:', err);
     } finally {
       setBusy(false);
     }
   };
+
   const doFold = async () => {
     if (busy) return;
     setBusy(true);
@@ -208,7 +188,7 @@ const AuctionCardModal = ({
           <div>
             <p className={style.heading}>Action</p>
             <ul className={style.biddingHistory}>
-              {currentAuction.history.slice(-totalPlayers).map((item, index) => (
+              {currentAuction.history.slice(-totalPlayers).map((item: any, index: number) => (
                 <li key={index}>
                   {playerLabel(players, item.playerId)}{' '}
                   {item.action === 'bid' ? `bids $${item.amount}` : 'folded'}

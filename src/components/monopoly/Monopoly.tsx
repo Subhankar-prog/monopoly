@@ -5,7 +5,6 @@ import CardModal from './modal/CardModal';
 import ModalContainer from './modal/ModalCotainer';
 import Board from './board/Board';
 import style from '../../assets/css/monopoly.module.scss';
-import Header from '../home/header/Header';
 import Footer from '../home/footer/Footer';
 import BuyCardModal from './modal/BuyCardModal';
 import ChanceCardModal from './modal/ChanceCardModal';
@@ -23,6 +22,7 @@ import { setTotalPlayers } from '../../redux/actions/player';
 import { setSites } from '../../redux/actions/site';
 import sites from '../../assets/data/boardData.json';
 import MyCards from './modal/MyCards';
+import ActionLogModal from './modal/ActionLogModal';
 import {
   connectToServer,
   rejoinRoom as rejoinRoomSocket,
@@ -55,7 +55,7 @@ const Monopoly = ({
   dispatchIsMultiplayer,
   dispatchSyncGameState,
   showNotification,
-}) => {
+}: any) => {
   const { roomCode } = useParams();
   const [searchParams] = useSearchParams();
   const botCount = Math.max(0, Math.min(5, parseInt(searchParams.get('bots') || '0', 10) || 0));
@@ -63,22 +63,26 @@ const Monopoly = ({
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    const w = window.innerWidth;
-    const h = window.innerHeight;
-    const side = Math.min(w, h) - 100;
-    const boardData = {
-      side: side,
-      rowWidth: 120,
+    const updateSize = () => {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const side = Math.max(340, Math.min(w - 20, h - 40, 720));
+      const boardData = {
+        side: side,
+        rowWidth: Math.max(60, Math.floor(side * 0.16)),
+      };
+      setBoardSize(boardData);
+      calculateSitePositions(boardData);
     };
-    setBoardSize(boardData);
-    calculateSitePositions(boardData);
+
+    updateSize();
+    window.addEventListener('resize', updateSize);
 
     const checkAutoReconnect = async () => {
       if (roomCode && !network.isMultiplayer) {
         const savedName = sessionStorage.getItem('playerName');
         const savedCode = sessionStorage.getItem('roomCode');
         if (savedName && savedCode === roomCode) {
-          console.log('[Auto-Reconnect] Attempting to restore game connection...');
           try {
             await connectToServer();
             dispatchConnected(true);
@@ -94,7 +98,6 @@ const Monopoly = ({
               setEventOverlayBaseline(result.gameState);
               dispatchSyncGameState(result.gameState);
             }
-            console.log('[Auto-Reconnect] Success! Restored playerId:', result.playerId);
             setIsMounted(true);
             return;
           } catch (err) {
@@ -103,7 +106,6 @@ const Monopoly = ({
         }
       }
 
-      // Default logic if not auto-reconnecting
       if (!isMultiplayer) {
         const totalPlayers = botCount > 0 ? botCount + 1 : 2;
         setTotalPlayers(totalPlayers, botCount);
@@ -117,21 +119,22 @@ const Monopoly = ({
     };
 
     checkAutoReconnect();
+    return () => window.removeEventListener('resize', updateSize);
   }, [setBoardSize, calculateSitePositions, setTotalPlayers, setSites, isMultiplayer, roomCode, network.isMultiplayer, botCount]);
 
   return (
     <>
       {isMounted && (
         <div className={style.monopoly}>
-          <Header />
           {isMultiplayer && network.myPlayerId !== null && (
             <div style={{
               textAlign: 'center',
-              padding: '4px 12px',
-              background: 'rgba(247,151,30,0.15)',
-              color: '#ffd200',
+              padding: '6px 12px',
+              background: 'rgba(74, 12, 10, 0.9)',
+              color: '#ffd700',
               fontSize: '0.85rem',
-              fontWeight: 600,
+              fontWeight: 700,
+              borderBottom: '1px solid rgba(212,175,55,0.4)',
             }}>
               Room: {roomCode} • You are {playersData.players[network.myPlayerId]?.name || `Player ${network.myPlayerId + 1}`}
               {playersData.activePlayer === network.myPlayerId
@@ -153,14 +156,14 @@ const Monopoly = ({
               {modalData.currentModal === modalTypes.BUY_CARD && (
                 <ModalContainer
                   component={BuyCardModal}
-                  card={playersData.players[playersData.activePlayer].site}
+                  card={playersData.players[playersData.activePlayer]?.site}
                   disableHideOnOuterClick={true}
                 />
               )}
               {modalData.currentModal === modalTypes.AUCTION_CARD && (
                 <ModalContainer
                   component={AuctionCardModal}
-                  card={playersData.players[playersData.activePlayer].site}
+                  card={playersData.players[playersData.activePlayer]?.site}
                   disableHideOnOuterClick={true}
                 />
               )}
@@ -169,6 +172,9 @@ const Monopoly = ({
               )}
               {modalData.currentModal === modalTypes.TRADE && (
                 <ModalContainer component={TradeModal} title={'Propose a Trade'} />
+              )}
+              {modalData.currentModal === 'ACTION_LOG' && (
+                <ModalContainer component={ActionLogModal} title={'📜 Game Action Log'} />
               )}
             </>
           )}
@@ -179,27 +185,27 @@ const Monopoly = ({
   );
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch: any) => {
   return {
-    setBoardSize: data => dispatch(setBoardSize(data)),
-    calculateSitePositions: data => dispatch(calculateSitePositions(data)),
-    setTotalPlayers: (totalPlayers, botCount) => dispatch(setTotalPlayers(totalPlayers, botCount)),
-    setSites: data => dispatch(setSites(data)),
-    dispatchRoomCode: code => dispatch(setRoomCode(code)),
-    dispatchPlayerId: id => dispatch(setMyPlayerId(id)),
-    dispatchConnected: v => dispatch(setConnected(v)),
-    dispatchIsHost: v => dispatch(setIsHost(v)),
-    dispatchRoomPlayers: p => dispatch(setRoomPlayers(p)),
-    dispatchIsMultiplayer: v => dispatch(setIsMultiplayer(v)),
-    dispatchSyncGameState: gs => dispatch({
+    setBoardSize: (data: any) => dispatch(setBoardSize(data)),
+    calculateSitePositions: (data: any) => dispatch(calculateSitePositions(data)),
+    setTotalPlayers: (totalPlayers: any, botCount: any) => dispatch(setTotalPlayers(totalPlayers, botCount)),
+    setSites: (data: any) => dispatch(setSites(data)),
+    dispatchRoomCode: (code: any) => dispatch(setRoomCode(code)),
+    dispatchPlayerId: (id: any) => dispatch(setMyPlayerId(id)),
+    dispatchConnected: (v: any) => dispatch(setConnected(v)),
+    dispatchIsHost: (v: any) => dispatch(setIsHost(v)),
+    dispatchRoomPlayers: (p: any) => dispatch(setRoomPlayers(p)),
+    dispatchIsMultiplayer: (v: any) => dispatch(setIsMultiplayer(v)),
+    dispatchSyncGameState: (gs: any) => dispatch({
       type: SYNC_GAME_STATE,
       payload: { gameState: gs, actionRequired: null },
     }),
-    showNotification: data => dispatch(showNotification(data)),
+    showNotification: (data: any) => dispatch(showNotification(data)),
   };
 };
 
-const mapStateToProps = store => {
+const mapStateToProps = (store: any) => {
   return {
     modalData: store.modalData,
     currentCard: store.card.currentCard,
@@ -207,5 +213,5 @@ const mapStateToProps = store => {
     network: store.network,
   };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(Monopoly);
 
+export default connect(mapStateToProps, mapDispatchToProps)(Monopoly);

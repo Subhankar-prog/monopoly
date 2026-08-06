@@ -15,7 +15,9 @@ import AuctionWatcher from '../modal/AuctionWatcher';
 import BotController from '../bot/BotController';
 import DebtResolutionPanel from '../debt/DebtResolutionPanel';
 
-const Board = ({ side, totalPlayers, sites, active, network }) => {
+import customLogo from '../../../assets/images/custom-logo.jpg';
+
+const Board = ({ side, totalPlayers, sites, active, network }: any) => {
   return (
     <div className={style.tableLayout}>
       <div className={style.boardShell}>
@@ -32,9 +34,28 @@ const Board = ({ side, totalPlayers, sites, active, network }) => {
             <Row key={index} data={data} rowNum={index + 1} />
           ))}
           <div className={style.boardCenter}>
+            <div className={style.boardKonarkWheel} aria-hidden="true">
+              <svg viewBox="0 0 200 200" className={style.centerWheelSvg}>
+                <circle cx="100" cy="100" r="92" fill="none" stroke="#d4af37" strokeWidth="2.5" strokeDasharray="6 3" opacity="0.35" />
+                <circle cx="100" cy="100" r="76" fill="none" stroke="#d4af37" strokeWidth="1.5" opacity="0.3" />
+                <circle cx="100" cy="100" r="28" fill="none" stroke="#d4af37" strokeWidth="2.5" opacity="0.4" />
+                {[...Array(12)].map((_, idx) => (
+                  <line
+                    key={idx}
+                    x1="100"
+                    y1="100"
+                    x2={100 + 88 * Math.cos((idx * 30 * Math.PI) / 180)}
+                    y2={100 + 88 * Math.sin((idx * 30 * Math.PI) / 180)}
+                    stroke="#d4af37"
+                    strokeWidth="2"
+                    opacity="0.3"
+                  />
+                ))}
+              </svg>
+            </div>
             <div className={style.boardLogo}>
-              <span className={style.boardLogoLine1}>HEAVY</span>
-              <span className={style.boardLogoLine2}>BUSINESS</span>
+              <img src={customLogo} alt="Heavy Business Logo" className={style.boardLogoImg} />
+              <span className={style.odishaLogoBadge}>🪔 ODISHA EDITION 🪔</span>
             </div>
           </div>
           <PlayerContainer totalPlayers={totalPlayers} />
@@ -70,11 +91,7 @@ const Board = ({ side, totalPlayers, sites, active, network }) => {
   );
 };
 
-const mapDispatchToProps = dispatch => {
-  return {};
-};
-
-const mapStateToProps = store => {
+const mapStateToProps = (store: any) => {
   return {
     side: store.board.side,
     totalPlayers: store.playersData.totalPlayers,
@@ -83,4 +100,5 @@ const mapStateToProps = store => {
     network: store.network,
   };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(Board);
+
+export default connect(mapStateToProps)(Board);

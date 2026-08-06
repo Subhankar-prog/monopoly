@@ -5,39 +5,105 @@
   align-items: center;
   justify-content: center;
   background:
-    radial-gradient(ellipse 900px 500px at 15% 8%, rgba(217, 169, 79, 0.07), transparent 60%),
-    radial-gradient(ellipse 700px 500px at 88% 90%, rgba(34, 96, 66, 0.35), transparent 55%),
-    linear-gradient(175deg, var(--felt-900) 0%, var(--felt-950) 55%, #050f0c 100%);
-  color: var(--ivory-100);
+    radial-gradient(ellipse 900px 500px at 15% 8%, rgba(212, 175, 55, 0.16), transparent 60%),
+    radial-gradient(ellipse 700px 500px at 88% 90%, rgba(139, 30, 27, 0.45), transparent 55%),
+    linear-gradient(175deg, #4a0c0a 0%, #2b0605 55%, #180302 100%);
+  color: #fffdf7;
   font-family: var(--hero-body);
   padding: 20px;
+  position: relative;
 }
 
 .lobbyCard {
   position: relative;
-  background: linear-gradient(160deg, rgba(246, 241, 230, 0.05), rgba(246, 241, 230, 0.015));
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(217, 169, 79, 0.25);
-  border-radius: 20px;
+  background: linear-gradient(160deg, rgba(74, 12, 10, 0.75), rgba(43, 6, 5, 0.88));
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 24px;
   padding: 42px;
   width: 100%;
   max-width: 540px;
-  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 215, 0, 0.25);
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 10px;
+    background-color: #8b1e1b;
+    background-image: 
+      linear-gradient(45deg, #d4af37 25%, transparent 25%, transparent 75%, #d4af37 75%, #d4af37),
+      linear-gradient(45deg, #d4af37 25%, transparent 25%, transparent 75%, #d4af37 75%, #d4af37),
+      linear-gradient(135deg, #180302 25%, transparent 25%, transparent 75%, #180302 75%, #180302),
+      linear-gradient(135deg, #180302 25%, transparent 25%, transparent 75%, #180302 75%, #180302);
+    background-size: 14px 14px;
+    background-position: 0 0, 7px 7px, 7px 0, 0 7px;
+    border-bottom: 1px solid #ffd700;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 10px;
+    background-color: #8b1e1b;
+    background-image: 
+      linear-gradient(45deg, #d4af37 25%, transparent 25%, transparent 75%, #d4af37 75%, #d4af37),
+      linear-gradient(45deg, #d4af37 25%, transparent 25%, transparent 75%, #d4af37 75%, #d4af37),
+      linear-gradient(135deg, #180302 25%, transparent 25%, transparent 75%, #180302 75%, #180302),
+      linear-gradient(135deg, #180302 25%, transparent 25%, transparent 75%, #180302 75%, #180302);
+    background-size: 14px 14px;
+    background-position: 0 0, 7px 7px, 7px 0, 0 7px;
+    border-top: 1px solid #ffd700;
+  }
+}
+
+.lobbyLogoWrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.lobbyLogoImg {
+  height: 96px;
+  width: auto;
+  max-width: 320px;
+  object-fit: contain;
+  mix-blend-mode: lighten;
+  filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.7));
+}
+
+.odishaCrown {
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  color: #ffd700;
+  margin-bottom: 6px;
+  text-shadow: 0 2px 8px rgba(212, 175, 55, 0.4);
 }
 
 .title {
   font-family: var(--hero-display);
-  font-weight: 600;
-  font-size: 2.2rem;
+  font-weight: 700;
+  font-size: 2.3rem;
   text-align: center;
-  margin-bottom: 6px;
-  color: var(--ivory-100);
+  margin-bottom: 4px;
+  background: linear-gradient(135deg, #fffdf7 0%, #ffd700 60%, #e5a93c 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .subtitle {
   text-align: center;
-  color: var(--ivory-200);
-  opacity: 0.75;
+  color: #faf3e0;
+  opacity: 0.85;
   margin-bottom: 30px;
   font-size: 0.92rem;
   line-height: 1.5;
@@ -55,10 +121,10 @@
   min-width: 100px;
   font-family: var(--hero-body);
   padding: 13px;
-  border: 1px solid rgba(217, 169, 79, 0.25);
-  border-radius: 10px;
-  background: rgba(246, 241, 230, 0.03);
-  color: var(--ivory-100);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 12px;
+  background: rgba(139, 30, 27, 0.2);
+  color: #fffdf7;
   font-size: 0.88rem;
   font-weight: 600;
   cursor: pointer;
@@ -66,14 +132,15 @@
 }
 
 .modeBtn:hover {
-  border-color: rgba(217, 169, 79, 0.55);
-  background: rgba(217, 169, 79, 0.08);
+  border-color: #ffd700;
+  background: rgba(212, 175, 55, 0.15);
+  transform: translateY(-2px);
 }
 
 .modeBtnActive {
-  border-color: var(--brass-400);
-  background: rgba(217, 169, 79, 0.16);
-  box-shadow: 0 0 0 1px rgba(217, 169, 79, 0.3);
+  border-color: #ffd700;
+  background: linear-gradient(135deg, rgba(178, 34, 34, 0.6) 0%, rgba(212, 175, 55, 0.35) 100%);
+  box-shadow: 0 0 16px rgba(212, 175, 55, 0.4);
 }
 
 .inputGroup {
@@ -84,8 +151,8 @@
   display: block;
   font-size: 0.76rem;
   font-weight: 700;
-  color: var(--ivory-200);
-  opacity: 0.7;
+  color: #faf3e0;
+  opacity: 0.85;
   margin-bottom: 8px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -93,20 +160,21 @@
 
 .input {
   width: 100%;
-  padding: 13px 16px;
-  background: rgba(5, 15, 12, 0.5);
-  border: 1px solid rgba(217, 169, 79, 0.2);
-  border-radius: 10px;
-  color: var(--ivory-100);
+  padding: 14px 18px;
+  background: rgba(24, 3, 2, 0.7);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  border-radius: 12px;
+  color: #fffdf7;
   font-family: var(--hero-body);
   font-size: 1.02rem;
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
   box-sizing: border-box;
 }
 
 .input:focus {
-  border-color: var(--brass-400);
+  border-color: #ffd700;
+  box-shadow: 0 0 12px rgba(212, 175, 55, 0.35);
 }
 
 .input::placeholder {

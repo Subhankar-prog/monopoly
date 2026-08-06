@@ -35,22 +35,25 @@ export const ifCurrentSiteIsOfTypeIsTax = (
 
 export const ifCurrentSiteIsOfTypeIsSpecial = (
   currentSiteId,
-  currentPlayerId,
+  currentPlayer,
   debitPlayerMoney,
   setIsDone,
   movePlayer,
   showNotification
 ) => {
+  const playerId = typeof currentPlayer === 'object' ? currentPlayer.playerId : currentPlayer;
+  const inJail = typeof currentPlayer === 'object' ? currentPlayer.inJail : false;
+
   if (currentSiteId === 10) {
-    // Just visiting — this is free. (A real jail stay only costs money when
-    // you're actually sent to jail and choose to pay the $50 release fine,
-    // handled elsewhere; landing here while free-roaming costs nothing.)
-    showNotification?.({
-      title: 'Just Visiting',
-      message: "You're just visiting Jail — no charge",
-      kind: 'info',
-      tier: 'toast',
-    });
+    // Only show "Just Visiting" if player is NOT in jail (sent to jail)
+    if (!inJail) {
+      showNotification?.({
+        title: 'Just Visiting',
+        message: "You're just visiting Jail — no charge",
+        kind: 'info',
+        tier: 'toast',
+      });
+    }
     setIsDone(true);
   } else if (currentSiteId === 30) {
     showNotification?.({
@@ -59,7 +62,7 @@ export const ifCurrentSiteIsOfTypeIsSpecial = (
       amount: null,
       kind: 'jail',
     });
-    movePlayer(currentPlayerId, 10, directions.BACKWARD);
+    movePlayer(playerId, 10, directions.BACKWARD);
   } else {
     setIsDone(true);
   }
@@ -215,7 +218,7 @@ export const appropriateActionHelper = (
   } else if (currentSite.type === cardTypes.SPECIAL) {
     ifCurrentSiteIsOfTypeIsSpecial(
       currentSite.id,
-      currentPlayer.playerId,
+      currentPlayer,
       debitPlayerMoney,
       setIsDone,
       movePlayer,

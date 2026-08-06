@@ -717,16 +717,17 @@ export function playerFinishedMoving(
         if (initialEligible.length === 0) {
           resolveAuction(gs, null, 0);
           actionRequired = null;
-        } else if (initialEligible.length === 1) {
-          resolveAuction(gs, initialEligible[0], 1);
-          actionRequired = null;
+        } else {
+          gs.currentAuction.activeBidderId = initialEligible[0];
         }
       }
     }
   } else if (currentSite.type === CARD_TYPES.SPECIAL) {
     if (currentSite.id === JAIL_SITE_ID) {
-      // Just visiting — no charge, nothing happens.
-      emitEvent(gs, { kind: 'visited_jail', playerId: currentPlayer.playerId });
+      // Just visiting — no charge, nothing happens. ONLY emit event if player is not actually in jail.
+      if (!currentPlayer.inJail) {
+        emitEvent(gs, { kind: 'visited_jail', playerId: currentPlayer.playerId });
+      }
       gs.isDone = true;
     } else if (currentSite.id === GO_TO_JAIL_SITE_ID) {
       sendToJail(gs, currentPlayer.playerId);
@@ -956,7 +957,13 @@ function advanceAuction(gs: GameState): void {
   const eligible = eligibleBidders(gs, auction);
 
   if (eligible.length === 1) {
-    resolveAuction(gs, eligible[0], Math.max(auction.currentBid, 1));
+    if (auction.highBidderId !== null) {
+      // High bidder wins for their current bid!
+      resolveAuction(gs, auction.highBidderId, auction.currentBid);
+    } else {
+      // No bid placed yet. Single remaining player gets turn to bid or fold.
+      auction.activeBidderId = eligible[0];
+    }
   } else if (eligible.length === 0) {
     if (auction.highBidderId !== null) {
       resolveAuction(gs, auction.highBidderId, auction.currentBid);

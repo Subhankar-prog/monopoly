@@ -22,6 +22,8 @@ import {
 } from '../../redux/actions/network';
 import { colors } from '../../utility/constants';
 
+import customLogo from '../../assets/images/custom-logo.jpg';
+
 type LobbyMode = 'select' | 'create' | 'join' | 'rejoin' | 'waiting' | 'bots';
 
 const PLAYER_COLORS = ['#e74c3c', '#f1c40f', '#3498db', '#2ecc71', '#e67e22', '#e91e90'];
@@ -254,8 +256,12 @@ const Lobby = ({
   return (
     <div className={style.lobby}>
       <div className={style.lobbyCard}>
-        <h1 className={style.title}>🎲 Heavy Business</h1>
-        <p className={style.subtitle}>Online Multiplayer</p>
+        <div className={style.lobbyLogoWrap}>
+          <img src={customLogo} alt="Monopoly Logo" className={style.lobbyLogoImg} />
+        </div>
+        <div className={style.odishaCrown}>🪔 ODISHA HERITAGE 🪔</div>
+        <h1 className={style.title}>Heavy Business</h1>
+        <p className={style.subtitle}>Real-Time Property Trading</p>
 
         <div className={style.modeSelector}>
           <button

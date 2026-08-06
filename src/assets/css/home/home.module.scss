@@ -1,8 +1,23 @@
 .home {
   width: 100%;
   min-height: 100vh;
+  position: relative;
   background:
-    radial-gradient(ellipse 900px 500px at 15% 8%, rgba(217, 169, 79, 0.07), transparent 60%),
-    radial-gradient(ellipse 700px 500px at 88% 20%, rgba(34, 96, 66, 0.35), transparent 55%),
-    linear-gradient(175deg, var(--felt-900) 0%, var(--felt-950) 55%, #050f0c 100%);
+    radial-gradient(ellipse 900px 500px at 20% 12%, rgba(212, 175, 55, 0.18), transparent 60%),
+    radial-gradient(ellipse 800px 600px at 85% 80%, rgba(139, 30, 27, 0.45), transparent 60%),
+    radial-gradient(circle at 50% 50%, rgba(26, 82, 118, 0.25), transparent 70%),
+    linear-gradient(175deg, #4a0c0a 0%, #2b0605 55%, #180302 100%);
+  color: var(--odisha-sand-100);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, #d4af37 0%, #b22222 25%, #ffd700 50%, #b22222 75%, #d4af37 100%);
+    box-shadow: 0 0 12px rgba(212, 175, 55, 0.6);
+    z-index: 100;
+  }
 }

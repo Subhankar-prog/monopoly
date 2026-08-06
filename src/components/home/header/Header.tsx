@@ -1,18 +1,20 @@
 import style from '../../../assets/css/home/header.module.scss';
-import logo from '../../../assets/images/logo.svg';
+import customLogo from '../../../assets/images/custom-logo.jpg';
 const Header = () => {
   return (
     <header className={`${style.header} parentContainer`}>
+      <div className="sambalpuriIkatRibbon" />
       <div className={`${style.headerInner} container`}>
         <div className={style.logo}>
           <a href="/">
-            <img src={logo} alt="Heavy Business" />
+            <img src={customLogo} alt="Heavy Business Logo" className={style.headerLogoImg} />
           </a>
         </div>
-        <a href="/lobby" className={style.navCta}>
+        {/* <a href="/lobby" className={style.navCta}>
           Play Now
-        </a>
+        </a> */}
       </div>
+      <div className="sambalpuriIkatRibbon" />
     </header>
   );
 };

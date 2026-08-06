@@ -30,6 +30,27 @@ const Main = () => {
   return (
     <div className={style.main}>
       <section className={style.hero}>
+        {/* Odisha Heritage Konark Sun Wheel Watermark */}
+        <div className={style.konarkWatermark} aria-hidden="true">
+          <svg viewBox="0 0 200 200" className={style.konarkWheelSvg}>
+            <circle cx="100" cy="100" r="90" fill="none" stroke="#d4af37" strokeWidth="2" strokeDasharray="6 3" opacity="0.25" />
+            <circle cx="100" cy="100" r="75" fill="none" stroke="#d4af37" strokeWidth="1.5" opacity="0.2" />
+            <circle cx="100" cy="100" r="25" fill="none" stroke="#d4af37" strokeWidth="2" opacity="0.3" />
+            {[...Array(12)].map((_, idx) => (
+              <line
+                key={idx}
+                x1="100"
+                y1="100"
+                x2={100 + 88 * Math.cos((idx * 30 * Math.PI) / 180)}
+                y2={100 + 88 * Math.sin((idx * 30 * Math.PI) / 180)}
+                stroke="#d4af37"
+                strokeWidth="1.8"
+                opacity="0.22"
+              />
+            ))}
+          </svg>
+        </div>
+
         <div className={style.tileField} aria-hidden="true">
           {FLOATING_TILES.map((t, i) => (
             <div
@@ -51,7 +72,9 @@ const Main = () => {
         </div>
 
         <div className={style.heroContent}>
-          <span className={style.eyebrow}>Free · Real-time · Multiplayer</span>
+          <span className={style.eyebrow}>
+            <span className={style.odishaDot}>🪔</span> Odisha Heritage Edition · Real-Time Monopoly
+          </span>
           <h1 className={style.headline}>
             Own the board.
             <br />
