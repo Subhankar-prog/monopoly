@@ -1,7 +1,8 @@
 // ============================================================================
-// BIG REVEAL — full-screen dramatic overlay for major moments
-// (chance/chest draws, purchases, jail, bankruptcy, trades, game over)
+// BIG REVEAL — full-screen overlay themed to the Odisha / Heavy Business board
+// Deep maroon-red background · Gold accents · Sambalpuri border strip
 // ============================================================================
+
 .overlay {
   position: fixed;
   inset: 0;
@@ -12,258 +13,336 @@
   z-index: 9999;
   padding: 20px;
 }
+
+// Backdrop matches the board's table-layout radial gradient
 .backdrop {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 40%, rgba(20, 10, 40, 0.75), rgba(4, 2, 10, 0.92));
-  backdrop-filter: blur(8px);
+  background: radial-gradient(
+    ellipse 120% 100% at 50% 40%,
+    rgba(74, 12, 10, 0.82),
+    rgba(43, 6, 5, 0.97)
+  );
+  backdrop-filter: blur(10px) saturate(1.2);
   opacity: 0;
-  animation: fadeIn 220ms ease forwards;
+  animation: fadeIn 200ms ease forwards;
 }
+
+// Subtle Sambalpuri ikat weave pattern on the backdrop
+.backdrop::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(45deg,  rgba(212, 175, 55, 0.045) 25%, transparent 25%, transparent 75%, rgba(212, 175, 55, 0.045) 75%),
+    linear-gradient(45deg,  rgba(212, 175, 55, 0.045) 25%, transparent 25%, transparent 75%, rgba(212, 175, 55, 0.045) 75%),
+    linear-gradient(135deg, rgba(24,  3,  2,  0.07)   25%, transparent 25%, transparent 75%, rgba(24,  3,  2,  0.07)   75%),
+    linear-gradient(135deg, rgba(24,  3,  2,  0.07)   25%, transparent 25%, transparent 75%, rgba(24,  3,  2,  0.07)   75%);
+  background-size: 18px 18px;
+  background-position: 0 0, 9px 9px, 9px 0, 0 9px;
+  pointer-events: none;
+}
+
+// Gold ring burst matching the board's decorative feel
 .glowRing {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 120px;
-  height: 120px;
+  width: 130px;
+  height: 130px;
   border-radius: 50%;
-  border: 3px solid rgba(255, 215, 0, 0.6);
-  transform: translate(-50%, -50%) scale(0.5);
+  border: 3px solid rgba(212, 175, 55, 0.75);
+  transform: translate(-50%, -50%) scale(0.3);
   opacity: 0.9;
-  animation: ringBurst 900ms cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+  animation: ringBurst 850ms cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
   pointer-events: none;
 }
+
 @keyframes ringBurst {
-  0% { transform: translate(-50%, -50%) scale(0.3); opacity: 0.9; border-width: 6px; }
-  100% { transform: translate(-50%, -50%) scale(9); opacity: 0; border-width: 1px; }
+  0%   { transform: translate(-50%, -50%) scale(0.3); opacity: 0.9; border-width: 7px; }
+  100% { transform: translate(-50%, -50%) scale(11); opacity: 0;   border-width: 1px; }
 }
 
+// ── Main card ──────────────────────────────────────────────────────────────
 .card {
   position: relative;
-  background: linear-gradient(155deg, #241a3d 0%, #1a1330 55%, #120c22 100%);
-  padding: 30px 28px 26px;
-  border-radius: 24px;
+  // Deep maroon gradient — mirrors the board shell & tableLayout
+  background: linear-gradient(158deg, #4a0c0a 0%, #2b0605 50%, #180302 100%);
+  padding: 38px 32px 28px;
+  border-radius: 20px;
   box-shadow:
-    0 30px 80px rgba(0, 0, 0, 0.65),
-    0 0 0 1px rgba(255, 215, 0, 0.25),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  transform: translateY(30px) scale(0.94);
+    0 40px 100px rgba(0, 0, 0, 0.8),
+    0 0 0 1.5px rgba(212, 175, 55, 0.5),
+    0 0 50px rgba(212, 175, 55, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transform: translateY(32px) scale(0.93);
   opacity: 1;
   pointer-events: auto;
   text-align: center;
   min-width: 460px;
   max-width: min(560px, 100%);
-  border: 1px solid rgba(255, 215, 0, 0.35);
   overflow: hidden;
+  border: 1.5px solid rgba(212, 175, 55, 0.45);
 
   @media (max-width: 600px) {
     min-width: unset;
     width: 92vw;
-    padding: 26px 18px 20px;
+    padding: 32px 18px 22px;
   }
 }
+
+// Inner radial glow — matches the board center's light
 .card::before {
   content: '';
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 15% -10%, rgba(255, 215, 0, 0.16), transparent 45%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0));
+    radial-gradient(ellipse 80% 50% at 20% -10%, rgba(212, 175, 55, 0.14), transparent 55%),
+    radial-gradient(ellipse 60% 60% at 90% 110%,  rgba(139, 30, 27, 0.4), transparent 55%);
   pointer-events: none;
 }
+
+// Sambalpuri ikat border strip at top — matches boardShell pattern
+.card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 6px;
+  background-color: #8b1e1b;
+  background-image:
+    linear-gradient(45deg,  #d4af37 25%, transparent 25%, transparent 75%, #d4af37 75%),
+    linear-gradient(45deg,  #d4af37 25%, transparent 25%, transparent 75%, #d4af37 75%),
+    linear-gradient(135deg, #180302 25%, transparent 25%, transparent 75%, #180302 75%),
+    linear-gradient(135deg, #180302 25%, transparent 25%, transparent 75%, #180302 75%);
+  background-size: 12px 12px;
+  background-position: 0 0, 6px 6px, 6px 0, 0 6px;
+  border-radius: 20px 20px 0 0;
+}
+
+// ── Ribbon header — gold, like the board's trim ────────────────────────────
 .ribbon {
   position: absolute;
-  top: -2px;
+  top: 6px; // sits just below the Sambalpuri strip
   left: 50%;
   transform: translateX(-50%);
-  padding: 9px 28px 10px;
+  padding: 8px 28px 9px;
   border-radius: 0 0 14px 14px;
-  background: linear-gradient(135deg, #ffd54f, #ffb400);
-  color: #2a1a00;
-  font-size: 0.9rem;
+  background: linear-gradient(135deg, #ffd700 0%, #d4af37 55%, #c59b27 100%);
+  color: #180302;
+  font-size: 0.87rem;
   font-weight: 900;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  box-shadow: 0 8px 18px rgba(255, 180, 0, 0.35);
+  box-shadow:
+    0 6px 20px rgba(0, 0, 0, 0.55),
+    0 0 14px rgba(212, 175, 55, 0.35);
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
   white-space: nowrap;
+  font-family: var(--font-display);
 }
+
 .ribbonIcon {
-  font-size: 1rem;
+  font-size: 1.05rem;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4));
 }
+
 .header {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 16px;
-  margin-top: 34px;
+  margin-top: 44px;
   margin-bottom: 18px;
 }
+
 .titleGroup {
   text-align: left;
 }
+
 .title {
   display: block;
-  font-size: 1.5rem;
+  font-size: 1.55rem;
   font-weight: 900;
-  color: #fff;
-  letter-spacing: 0.01em;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+  color: #fffdf7;  // board's ivory-100
+  letter-spacing: 0.02em;
+  font-family: var(--font-display);
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.6);
 }
+
 .subtitle {
   display: block;
   margin-top: 5px;
   font-size: 0.98rem;
-  color: #cabfe6;
+  color: #e8c477;  // warm gold-tinted muted text
+  line-height: 1.4;
 }
+
+// Badge icon circle — dark red matching board center
 .badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 56px;
-  height: 56px;
+  width: 58px;
+  height: 58px;
   border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, #3a2c5e, #201638);
-  border: 2px solid rgba(255, 215, 0, 0.5);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4), inset 0 0 12px rgba(255, 215, 0, 0.15);
-  font-size: 1.5rem;
+  background: radial-gradient(circle at 30% 30%, #8b1e1b, #4a0c0a);
+  border: 2px solid rgba(212, 175, 55, 0.6);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5), inset 0 0 14px rgba(212, 175, 55, 0.15);
+  font-size: 1.6rem;
 }
+
+// ── Amount display ─────────────────────────────────────────────────────────
 .amountBlock {
   display: grid;
   gap: 8px;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
   text-align: center;
 }
+
 .amountLabel {
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   font-weight: 800;
-  color: #a396c9;
-  letter-spacing: 0.16em;
+  color: rgba(212, 175, 55, 0.72);
+  letter-spacing: 0.2em;
   text-transform: uppercase;
 }
+
 .amountValueBlock {
   display: inline-flex;
   align-items: baseline;
   justify-content: center;
   gap: 8px;
-  padding: 10px 24px;
-  border-radius: 16px;
-  background: rgba(0, 0, 0, 0.28);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 10px 28px;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(212, 175, 55, 0.22);
   margin: 0 auto;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
 }
+
 .currency {
-  font-size: 1.2rem;
-  color: #ffd54f;
+  font-size: 1.25rem;
+  color: #ffd700;
   font-weight: 700;
+  text-shadow: 0 0 12px rgba(212, 175, 55, 0.5);
 }
+
 .amountValue {
-  font-size: 2.8rem;
+  font-size: 2.85rem;
   font-weight: 900;
-  letter-spacing: -0.01em;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+  letter-spacing: -0.02em;
+  font-family: var(--font-display);
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.6);
 }
-.amountValueGain {
-  color: #6ee892;
-}
-.amountValueLoss {
-  color: #ff8080;
-}
+
+.amountValueGain { color: #5ee87a; }
+.amountValueLoss { color: #ff7070; }
+
+// ── Message box ───────────────────────────────────────────────────────────
 .message {
   font-size: 1rem;
-  color: #e8e1fa;
-  line-height: 1.55;
-  margin: 0 auto 18px;
+  color: #fffdf7;
+  line-height: 1.6;
+  margin: 0 auto 20px;
   max-width: 92%;
-  padding: 15px 18px;
-  border-radius: 14px;
-  background: rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 14px 18px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(212, 175, 55, 0.2);
   font-weight: 500;
 }
+
 .noteFooter {
-  font-size: 0.85rem;
-  color: #8f81b8;
+  font-size: 0.8rem;
+  color: rgba(212, 175, 55, 0.58);
   margin-top: 12px;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
+  font-style: italic;
 }
+
+// ── Close button — gold ring style ────────────────────────────────────────
 .closeButton {
   position: absolute;
-  top: 14px;
-  right: 14px;
+  top: 12px;
+  right: 12px;
   width: 34px;
   height: 34px;
-  border: none;
+  border: 1.5px solid rgba(212, 175, 55, 0.4);
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
+  background: rgba(212, 175, 55, 0.08);
+  color: #d4af37;
   font-size: 1.3rem;
   line-height: 1;
   cursor: pointer;
-  transition: background 180ms ease, transform 180ms ease;
+  transition: background 160ms ease, transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   z-index: 2;
 }
+
 .closeButton:hover {
-  background: rgba(255, 255, 255, 0.22);
-  transform: scale(1.08) rotate(90deg);
+  background: rgba(212, 175, 55, 0.22);
+  border-color: rgba(212, 175, 55, 0.75);
+  transform: scale(1.1) rotate(90deg);
+  box-shadow: 0 0 14px rgba(212, 175, 55, 0.3);
 }
 
-/* Kind-specific accent glows on the card border */
-.credit { box-shadow: 0 30px 80px rgba(0,0,0,0.65), 0 0 0 1px rgba(110,232,146,0.4), 0 0 40px rgba(110,232,146,0.18), inset 0 1px 0 rgba(255,255,255,0.08); }
-.debit { box-shadow: 0 30px 80px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,128,128,0.4), 0 0 40px rgba(255,128,128,0.18), inset 0 1px 0 rgba(255,255,255,0.08); }
-.buy { box-shadow: 0 30px 80px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,213,79,0.5), 0 0 46px rgba(255,213,79,0.25), inset 0 1px 0 rgba(255,255,255,0.08); }
-.sell { box-shadow: 0 30px 80px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,213,79,0.4), 0 0 40px rgba(255,213,79,0.18), inset 0 1px 0 rgba(255,255,255,0.08); }
-.mortgage { box-shadow: 0 30px 80px rgba(0,0,0,0.65), 0 0 0 1px rgba(180,150,255,0.4), 0 0 40px rgba(180,150,255,0.18), inset 0 1px 0 rgba(255,255,255,0.08); }
-.redeem { box-shadow: 0 30px 80px rgba(0,0,0,0.65), 0 0 0 1px rgba(135,217,221,0.4), 0 0 40px rgba(135,217,221,0.18), inset 0 1px 0 rgba(255,255,255,0.08); }
-.build { box-shadow: 0 30px 80px rgba(0,0,0,0.65), 0 0 0 1px rgba(249,192,96,0.4), 0 0 40px rgba(249,192,96,0.18), inset 0 1px 0 rgba(255,255,255,0.08); }
-.chance { box-shadow: 0 30px 80px rgba(0,0,0,0.65), 0 0 0 1px rgba(179,136,255,0.5), 0 0 50px rgba(179,136,255,0.28), inset 0 1px 0 rgba(255,255,255,0.08); }
-.chest { box-shadow: 0 30px 80px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,183,77,0.5), 0 0 50px rgba(255,183,77,0.28), inset 0 1px 0 rgba(255,255,255,0.08); }
-.jail { box-shadow: 0 30px 80px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,107,107,0.5), 0 0 50px rgba(255,107,107,0.25), inset 0 1px 0 rgba(255,255,255,0.08); }
-.info { box-shadow: 0 30px 80px rgba(0,0,0,0.65), 0 0 0 1px rgba(150,160,255,0.4), 0 0 40px rgba(150,160,255,0.18), inset 0 1px 0 rgba(255,255,255,0.08); }
+// ── Kind-specific border glow — adapted to the board palette ─────────────
+.credit   { box-shadow: 0 40px 100px rgba(0,0,0,0.8), 0 0 0 1.5px rgba(94,232,122,0.55),   0 0 50px rgba(94,232,122,0.18),  inset 0 1px 0 rgba(255,255,255,0.06); }
+.debit    { box-shadow: 0 40px 100px rgba(0,0,0,0.8), 0 0 0 1.5px rgba(255,100,100,0.55),  0 0 50px rgba(255,100,100,0.18), inset 0 1px 0 rgba(255,255,255,0.06); }
+.buy      { box-shadow: 0 40px 100px rgba(0,0,0,0.8), 0 0 0 1.5px rgba(212,175,55,0.7),    0 0 60px rgba(212,175,55,0.25),  inset 0 1px 0 rgba(255,255,255,0.06); }
+.sell     { box-shadow: 0 40px 100px rgba(0,0,0,0.8), 0 0 0 1.5px rgba(212,175,55,0.55),   0 0 45px rgba(212,175,55,0.18),  inset 0 1px 0 rgba(255,255,255,0.06); }
+.mortgage { box-shadow: 0 40px 100px rgba(0,0,0,0.8), 0 0 0 1.5px rgba(180,150,255,0.45),  0 0 45px rgba(180,150,255,0.15), inset 0 1px 0 rgba(255,255,255,0.06); }
+.redeem   { box-shadow: 0 40px 100px rgba(0,0,0,0.8), 0 0 0 1.5px rgba(135,217,221,0.45),  0 0 45px rgba(135,217,221,0.15), inset 0 1px 0 rgba(255,255,255,0.06); }
+.build    { box-shadow: 0 40px 100px rgba(0,0,0,0.8), 0 0 0 1.5px rgba(249,192,96,0.45),   0 0 45px rgba(249,192,96,0.15),  inset 0 1px 0 rgba(255,255,255,0.06); }
+.chance   { box-shadow: 0 40px 100px rgba(0,0,0,0.8), 0 0 0 1.5px rgba(212,175,55,0.65),   0 0 60px rgba(212,175,55,0.22),  inset 0 1px 0 rgba(255,255,255,0.06); }
+.chest    { box-shadow: 0 40px 100px rgba(0,0,0,0.8), 0 0 0 1.5px rgba(212,175,55,0.65),   0 0 60px rgba(212,175,55,0.22),  inset 0 1px 0 rgba(255,255,255,0.06); }
+.jail     { box-shadow: 0 40px 100px rgba(0,0,0,0.8), 0 0 0 1.5px rgba(178,34,34,0.75),    0 0 65px rgba(178,34,34,0.35),   inset 0 1px 0 rgba(255,255,255,0.06); }
+.info     { box-shadow: 0 40px 100px rgba(0,0,0,0.8), 0 0 0 1.5px rgba(212,175,55,0.45),   0 0 45px rgba(212,175,55,0.14),  inset 0 1px 0 rgba(255,255,255,0.06); }
+.move     { box-shadow: 0 40px 100px rgba(0,0,0,0.8), 0 0 0 1.5px rgba(212,175,55,0.5),    0 0 50px rgba(212,175,55,0.16),  inset 0 1px 0 rgba(255,255,255,0.06); }
 
-/* Bottom auto-dismiss progress bar */
+// ── Progress bar — gold to maroon ─────────────────────────────────────────
 .bigProgressTrack {
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  left: 0; right: 0; bottom: 0;
   height: 4px;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.4);
   overflow: hidden;
 }
+
 .bigProgressFill {
   height: 100%;
   width: 100%;
-  background: linear-gradient(90deg, #ffd54f, #ff8a00);
+  background: linear-gradient(90deg, #ffd700, #d4af37, #8b1e1b);
   transform-origin: left center;
   animation-name: shrinkBar;
   animation-timing-function: linear;
   animation-fill-mode: forwards;
 }
+
 @keyframes shrinkBar {
   from { transform: scaleX(1); }
-  to { transform: scaleX(0); }
+  to   { transform: scaleX(0); }
 }
 
-/* Coins animation */
+// ── Coins animation (unchanged — gold palette already matches) ────────────
 .coins {
   position: relative;
   height: 46px;
   margin-top: 4px;
   text-align: center;
 }
+
 .coin {
   width: 30px;
   height: 30px;
-  background: radial-gradient(circle at 30% 30%, #fff2a8, #ffd24d 40%, #ffb400 100%);
+  background: radial-gradient(circle at 30% 30%, #fff2a8, #ffd700 40%, #c59b27 100%);
   border-radius: 50%;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35), inset 0 -2px 4px rgba(0,0,0,0.15);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.4), inset 0 -2px 4px rgba(0,0,0,0.2);
   display: inline-block;
   margin: 0 6px;
   transform-origin: 50% 50%;
@@ -272,108 +351,129 @@
 .coin:nth-child(1) { animation-delay: 0ms; }
 .coin:nth-child(2) { animation-delay: 80ms; }
 .coin:nth-child(3) { animation-delay: 160ms; }
+
 .coinDebit {
-  background: radial-gradient(circle at 30% 30%, #ffb3b3, #ff6b6b 40%, #d13c3c 100%);
+  background: radial-gradient(circle at 30% 30%, #ffb3b3, #ff6b6b 40%, #c0392b 100%);
   animation-name: coinDrop;
 }
+
 @keyframes coinPop {
-  0% { transform: translateY(18px) scale(0.5); opacity: 0; }
-  30% { transform: translateY(-6px) scale(1.15); opacity: 1; }
-  65% { transform: translateY(-18px) scale(1.02); opacity: 0.9; }
-  100% { transform: translateY(-42px) scale(1); opacity: 0; }
-}
-@keyframes coinDrop {
-  0% { transform: translateY(-18px) scale(0.5); opacity: 0; }
-  30% { transform: translateY(4px) scale(1.15); opacity: 1; }
-  65% { transform: translateY(14px) scale(1.02); opacity: 0.9; }
-  100% { transform: translateY(38px) scale(1); opacity: 0; }
+  0%   { transform: translateY(18px)  scale(0.5); opacity: 0; }
+  30%  { transform: translateY(-6px)  scale(1.15); opacity: 1; }
+  65%  { transform: translateY(-18px) scale(1.02); opacity: 0.9; }
+  100% { transform: translateY(-42px) scale(1);    opacity: 0; }
 }
 
-/* Card draw reveal (Chance / Community Chest) */
+@keyframes coinDrop {
+  0%   { transform: translateY(-18px) scale(0.5); opacity: 0; }
+  30%  { transform: translateY(4px)   scale(1.15); opacity: 1; }
+  65%  { transform: translateY(14px)  scale(1.02); opacity: 0.9; }
+  100% { transform: translateY(38px)  scale(1);    opacity: 0; }
+}
+
+// ── Chance / Community Chest card reveal ──────────────────────────────────
+// Re-themed: deep red with gold border to match the board
 .cardIcon {
   position: relative;
   width: 190px;
   height: 118px;
   border-radius: 16px;
-  margin: 6px auto 16px auto;
-  background: linear-gradient(160deg, #fdfaff 0%, #ece2ff 100%);
+  margin: 10px auto 18px;
+  background: linear-gradient(158deg, #4a0c0a 0%, #2b0605 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 6px;
   font-weight: 800;
-  color: #4a2e8f;
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4), inset 0 0 0 3px rgba(255, 255, 255, 0.75);
-  border: 3px solid #fff;
+  color: #ffd700;
+  box-shadow:
+    0 18px 44px rgba(0, 0, 0, 0.55),
+    inset 0 0 0 2px rgba(212, 175, 55, 0.6);
+  border: 2px solid rgba(212, 175, 55, 0.55);
   transform: perspective(700px) rotateY(0deg) scale(0.9);
   animation: cardFlip 640ms cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
   transform-style: preserve-3d;
   overflow: hidden;
 }
+
 .cardIconGlyph {
-  font-size: 2.7rem;
+  font-size: 2.8rem;
   line-height: 1;
-  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
 }
+
 .cardIconLabel {
-  font-size: 0.76rem;
-  letter-spacing: 0.15em;
-  color: #6b4fb0;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  color: #d4af37;
   font-weight: 900;
+  text-transform: uppercase;
 }
+
 .cardIconCornerTL,
 .cardIconCornerBR {
   position: absolute;
   font-size: 0.9rem;
-  opacity: 0.35;
+  opacity: 0.4;
 }
-.cardIconCornerTL { top: 8px; left: 10px; }
+.cardIconCornerTL { top: 8px;    left: 10px; }
 .cardIconCornerBR { bottom: 8px; right: 10px; transform: rotate(180deg); }
+
+// Gold sheen sweep
 .cardSheen {
   position: absolute;
-  top: 0;
-  left: -60%;
-  width: 40%;
-  height: 100%;
-  background: linear-gradient(115deg, transparent 0%, rgba(255, 255, 255, 0.75) 50%, transparent 100%);
+  top: 0; left: -60%;
+  width: 40%; height: 100%;
+  background: linear-gradient(115deg, transparent 0%, rgba(212, 175, 55, 0.45) 50%, transparent 100%);
   transform: skewX(-18deg);
   animation: sheenSweep 1100ms ease-out 550ms forwards;
   opacity: 0;
 }
+
 @keyframes sheenSweep {
-  0% { left: -60%; opacity: 0; }
-  15% { opacity: 0.9; }
-  60% { opacity: 0.5; }
+  0%   { left: -60%; opacity: 0; }
+  15%  { opacity: 0.9; }
+  60%  { opacity: 0.5; }
   100% { left: 130%; opacity: 0; }
 }
+
 @keyframes cardFlip {
-  0% { transform: perspective(700px) rotateY(-110deg) scale(0.7); opacity: 0; }
-  55% { transform: perspective(700px) rotateY(16deg) scale(1.05); opacity: 1; }
-  80% { transform: perspective(700px) rotateY(-6deg) scale(1); }
-  100% { transform: perspective(700px) rotateY(0deg) scale(1); opacity: 1; }
+  0%   { transform: perspective(700px) rotateY(-110deg) scale(0.7); opacity: 0; }
+  55%  { transform: perspective(700px) rotateY(16deg)   scale(1.05); opacity: 1; }
+  80%  { transform: perspective(700px) rotateY(-6deg)   scale(1); }
+  100% { transform: perspective(700px) rotateY(0deg)    scale(1);    opacity: 1; }
 }
 
+// ── Entry animations ──────────────────────────────────────────────────────
 .pulse {
-  animation: slideUp 320ms cubic-bezier(0.2, 0.9, 0.3, 1) forwards, pulseGlow 1300ms ease-in-out forwards;
+  animation:
+    slideUp 300ms cubic-bezier(0.2, 0.9, 0.3, 1) forwards,
+    pulseGlow 1400ms ease-in-out forwards;
 }
+
 @keyframes pulseGlow {
-  0% { transform: scale(0.97); }
-  45% { transform: scale(1.015); }
+  0%   { transform: scale(0.96); }
+  45%  { transform: scale(1.012); }
   100% { transform: scale(1); }
 }
+
 .shake {
-  animation: slideUp 320ms cubic-bezier(0.2, 0.9, 0.3, 1) forwards, pulseGlow 1300ms ease-in-out forwards, shakeCard 480ms ease-in-out 320ms;
-}
-@keyframes shakeCard {
-  0%, 100% { margin-left: 0; }
-  20% { margin-left: -12px; }
-  40% { margin-left: 10px; }
-  60% { margin-left: -7px; }
-  80% { margin-left: 4px; }
+  animation:
+    slideUp 300ms cubic-bezier(0.2, 0.9, 0.3, 1) forwards,
+    pulseGlow 1400ms ease-in-out forwards,
+    shakeCard 500ms ease-in-out 300ms;
 }
 
-/* Confetti */
+@keyframes shakeCard {
+  0%, 100% { margin-left: 0; }
+  20%  { margin-left: -14px; }
+  40%  { margin-left: 11px; }
+  60%  { margin-left: -8px; }
+  80%  { margin-left: 5px; }
+}
+
+// ── Confetti — now gold/maroon themed ─────────────────────────────────────
 .confetti {
   position: absolute;
   inset: 0;
@@ -382,6 +482,7 @@
   border-radius: inherit;
   z-index: 1;
 }
+
 .confetti span {
   position: absolute;
   top: -14px;
@@ -391,6 +492,7 @@
   transform: translateY(-10px) rotate(10deg);
   animation: confetto 1500ms ease-in forwards;
 }
+
 .confettiTri {
   width: 0 !important;
   height: 0 !important;
@@ -399,20 +501,25 @@
   border-right: 6px solid transparent;
   border-bottom: 10px solid currentColor;
 }
+
 @keyframes confetto {
-  0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+  0%   { transform: translateY(-10px)  rotate(0deg);   opacity: 1; }
   100% { transform: translateY(360px) rotate(460deg); opacity: 0; }
 }
+
 @keyframes slideUp {
   to { transform: translateY(0) scale(1); opacity: 1; }
 }
+
 @keyframes fadeIn {
   to { opacity: 1; }
 }
 
+
 // ============================================================================
-// TOAST — compact slide-in banner for routine actions (rent, mortgage, etc.)
+// TOAST — compact slide-in banner — themed to board palette
 // ============================================================================
+
 .toastLayer {
   position: fixed;
   top: 18px;
@@ -422,25 +529,32 @@
   pointer-events: none;
   width: min(420px, 92vw);
 }
+
 .toast {
   position: relative;
   pointer-events: auto;
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 40px 12px 14px;
+  padding: 12px 42px 12px 14px;
   border-radius: 14px;
-  background: linear-gradient(135deg, #241a3d, #171128);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.04);
+  // Deep maroon matching the board
+  background: linear-gradient(135deg, #4a0c0a, #2b0605);
+  border: 1px solid rgba(212, 175, 55, 0.28);
+  box-shadow:
+    0 14px 36px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(212, 175, 55, 0.08),
+    0 0 20px rgba(212, 175, 55, 0.06);
   overflow: hidden;
-  animation: toastIn 380ms cubic-bezier(0.2, 0.85, 0.3, 1.3) forwards;
+  animation: toastIn 360ms cubic-bezier(0.2, 0.85, 0.3, 1.3) forwards;
 }
+
 @keyframes toastIn {
-  0% { transform: translateY(-30px) scale(0.92); opacity: 0; }
-  60% { transform: translateY(4px) scale(1.02); opacity: 1; }
-  100% { transform: translateY(0) scale(1); opacity: 1; }
+  0%   { transform: translateY(-32px) scale(0.91); opacity: 0; }
+  60%  { transform: translateY(4px)   scale(1.02); opacity: 1; }
+  100% { transform: translateY(0)     scale(1);    opacity: 1; }
 }
+
 .toastIcon {
   flex-shrink: 0;
   width: 34px;
@@ -450,27 +564,31 @@
   align-items: center;
   justify-content: center;
   font-size: 1.05rem;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.25);
 }
+
 .toastBody {
   flex: 1;
   min-width: 0;
 }
+
 .toastTitle {
   font-size: 0.85rem;
   font-weight: 800;
-  color: #fff;
-  letter-spacing: 0.01em;
+  color: #fffdf7;
+  letter-spacing: 0.02em;
 }
+
 .toastMessage {
-  font-size: 0.76rem;
-  color: #b3a8d4;
+  font-size: 0.75rem;
+  color: #e8c477;
   margin-top: 1px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .toastAmount {
   flex-shrink: 0;
   font-size: 0.95rem;
@@ -478,14 +596,17 @@
   padding: 4px 10px;
   border-radius: 999px;
 }
+
 .toastAmountGain {
-  color: #6ee892;
-  background: rgba(110, 232, 146, 0.12);
+  color: #5ee87a;
+  background: rgba(94, 232, 122, 0.12);
 }
+
 .toastAmountLoss {
-  color: #ff8f8f;
-  background: rgba(255, 128, 128, 0.12);
+  color: #ff7070;
+  background: rgba(255, 112, 112, 0.12);
 }
+
 .toastClose {
   position: absolute;
   top: 6px;
@@ -495,24 +616,26 @@
   border: none;
   border-radius: 50%;
   background: transparent;
-  color: #776a9c;
+  color: rgba(212, 175, 55, 0.55);
   font-size: 1rem;
   line-height: 1;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  transition: color 150ms ease;
 }
+
 .toastClose:hover {
-  color: #fff;
+  color: #ffd700;
 }
+
 .toastProgress {
   position: absolute;
-  left: 0;
-  bottom: 0;
+  left: 0; bottom: 0;
   height: 3px;
   width: 100%;
-  background: linear-gradient(90deg, #ffd54f, #ff8a00);
+  background: linear-gradient(90deg, #ffd700, #d4af37, #8b1e1b);
   transform-origin: left center;
   animation-name: shrinkBar;
   animation-timing-function: linear;

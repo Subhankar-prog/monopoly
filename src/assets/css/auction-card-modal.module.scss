@@ -28,14 +28,13 @@
 
 .auctionDetails {
   width: 255px;
-  /* height: 100%; */
   height: 310px;
-  /* border: 1px solid #cacaca; */
   border-radius: 15px;
   padding: 10px 0px 10px 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  color: #1a1a2e; /* explicit dark text on light background */
 }
 .heading {
   color: white;
@@ -49,8 +48,8 @@
   list-style-type: none;
   font-size: 12px;
   padding: 10px 15px;
-  color: #aaa;
-  font-weight: normal;
+  color: #333; /* was #aaa — much too faint on light bg */
+  font-weight: 600;
 }
 .bidAmount {
   font-size: 12px;
@@ -60,14 +59,17 @@
   padding: 4px 10px;
   margin-bottom: 5px;
   display: flex;
+  color: #1a1a2e;
 }
 .bidAmount input,
 .bidAmount label {
   width: 50%;
+  color: #1a1a2e;
 }
 .bidAmount input {
   border: none !important;
   outline: none !important;
+  color: #1a1a2e;
 }
 .bWhite {
   background-color: white;
@@ -78,6 +80,7 @@
   background-color: #fafafa;
   border-radius: 4px;
   padding: 4px 10px;
+  color: #1a1a2e;
 }
 .actualMoney {
   color: red;

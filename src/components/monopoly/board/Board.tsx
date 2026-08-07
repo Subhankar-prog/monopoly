@@ -13,6 +13,7 @@ import MenuButton from './MenuButton';
 import AuctionWatcher from '../modal/AuctionWatcher';
 import BotController from '../bot/BotController';
 import DebtResolutionPanel from '../debt/DebtResolutionPanel';
+import TurnTimer from '../timer/TurnTimer';
 
 import customLogo from '../../../assets/images/custom-logo.jpg';
 
@@ -82,6 +83,7 @@ const Board = ({ side, rowWidth, totalPlayers, sites, active, network }: any) =>
         <PlayerDetailsContainer />
 
         <div className={style.diceZone}>
+          <TurnTimer />
           <DiceContainer />
           <JailControls />
           <DoneButton />

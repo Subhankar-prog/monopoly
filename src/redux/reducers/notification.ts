@@ -57,6 +57,7 @@ export default function notification(state = initialState, action: any) {
         message,
         amount,
         kind: 'debit',
+        tier: 'big',
         logHistory: [entry, ...(state.logHistory || [])].slice(0, 100),
       };
     }
@@ -73,6 +74,7 @@ export default function notification(state = initialState, action: any) {
         message,
         amount,
         kind: 'credit',
+        tier: 'big',
         logHistory: [entry, ...(state.logHistory || [])].slice(0, 100),
       };
     }
@@ -88,6 +90,7 @@ export default function notification(state = initialState, action: any) {
         message,
         amount: siteData?.sellingPrice || null,
         kind: 'buy',
+        tier: 'big',
         logHistory: [entry, ...(state.logHistory || [])].slice(0, 100),
       };
     }
@@ -103,6 +106,7 @@ export default function notification(state = initialState, action: any) {
         message,
         amount: null,
         kind: 'sell',
+        tier: 'big',
         logHistory: [entry, ...(state.logHistory || [])].slice(0, 100),
       };
     }
@@ -119,6 +123,7 @@ export default function notification(state = initialState, action: any) {
         message,
         amount: null,
         kind: 'move',
+        tier: 'big',
         logHistory: [entry, ...(state.logHistory || [])].slice(0, 100),
       };
     }

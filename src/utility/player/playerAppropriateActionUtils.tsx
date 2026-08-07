@@ -39,7 +39,8 @@ export const ifCurrentSiteIsOfTypeIsSpecial = (
   debitPlayerMoney,
   setIsDone,
   movePlayer,
-  showNotification
+  showNotification,
+  setPendingMove?
 ) => {
   const playerId = typeof currentPlayer === 'object' ? currentPlayer.playerId : currentPlayer;
   const inJail = typeof currentPlayer === 'object' ? currentPlayer.inJail : false;
@@ -57,16 +58,22 @@ export const ifCurrentSiteIsOfTypeIsSpecial = (
     setIsDone(true);
   } else if (currentSiteId === 30) {
     showNotification?.({
-      title: 'Go to Jail',
-      message: 'Moving to Jail',
+      title: 'Go to Jail!',
+      message: 'You are being moved to Jail',
       amount: null,
       kind: 'jail',
     });
-    movePlayer(playerId, 10, directions.BACKWARD);
+    // Queue the jail move — it will execute AFTER the overlay is dismissed
+    if (setPendingMove) {
+      setPendingMove(playerId, 10, directions.BACKWARD);
+    } else {
+      movePlayer(playerId, 10, directions.BACKWARD);
+    }
   } else {
     setIsDone(true);
   }
 };
+
 
 export const ifCurrentSiteIsOfTypeIsSiteOrUtilityOrRealmRails = (
   currentSite,
@@ -196,7 +203,8 @@ export const appropriateActionHelper = (
   setShowModal,
   movePlayer,
   setCurrentCard,
-  showNotification
+  showNotification,
+  setPendingMove?
 ) => {
   if (
     currentSite.type === cardTypes.SITE ||
@@ -222,8 +230,10 @@ export const appropriateActionHelper = (
       debitPlayerMoney,
       setIsDone,
       movePlayer,
-      showNotification
+      showNotification,
+      setPendingMove  // pass through so jail overlay closes before jail move
     );
+
   } else if (currentSite.type === cardTypes.TAX) {
     ifCurrentSiteIsOfTypeIsTax(
       currentSite,

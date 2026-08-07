@@ -36,6 +36,7 @@ function Player({
   network,
   setCurrentCard,
   showNotification,
+  notification,
 }: any) {
   const playerRef = useRef(null);
   const isMountedRef = useRef(false);
@@ -47,6 +48,19 @@ function Player({
   const diceSumRef = useRef(diceSum);
   const isMoving = playersData.players[currentPlayerId].isMoving;
 
+  // ── Pending move queue ──────────────────────────────────────────────────
+  // pendingMoveRef holds the next move that should only execute after the
+  // overlay we explicitly showed (via showNotification) is dismissed.
+  // waitingForOwnNotifRef is set TRUE only when THIS component called
+  // showNotification for a pending move, and is cleared after the first
+  // true→false transition.  This prevents ANY other notification closing
+  // (e.g. Player 1's BUY_SITE auto-dismiss firing during Player 2's turn)
+  // from accidentally triggering the wrong player's token movement.
+  const pendingMoveRef = useRef<{ playerId: number; site: number; direction: any } | null>(null);
+  const waitingForOwnNotifRef = useRef(false);
+  const notifWasShowingRef = useRef(false);
+
+  // ── appropriateAction ───────────────────────────────────────────────────
   const appropriateAction = useCallback(() => {
     const currentSiteId = currentPlayerRef.current.site;
     const currentSite = siteDataRef.current.sites[currentSiteId];
@@ -65,6 +79,13 @@ function Player({
         }
       }
     } else {
+      // setPendingMove: queues a jail move and arms the watcher.
+      // Called by ifCurrentSiteIsOfTypeIsSpecial AFTER showing jail notification.
+      const setPendingMove = (pid: number, site: number, dir: string) => {
+        pendingMoveRef.current = { playerId: pid, site, direction: dir };
+        waitingForOwnNotifRef.current = true;
+      };
+
       appropriateActionHelper(
         currentSite,
         currentPlayerRef.current,
@@ -79,7 +100,8 @@ function Player({
         setShowModal,
         movePlayer,
         setCurrentCard,
-        showNotification
+        showNotification,
+        setPendingMove
       );
     }
   }, [
@@ -91,6 +113,7 @@ function Player({
     setShowModal,
     network.isMultiplayer,
     showNotification,
+    setCurrentCard,
   ]);
 
   const setPlayerPositionRecursive = useCallback(
@@ -110,6 +133,9 @@ function Player({
     [setIsMoving, currentPlayerId, playerMoveAudio]
   );
 
+  // ── Dice roll effect ────────────────────────────────────────────────────
+  // Store the move in pendingMoveRef and show the overlay first.
+  // The token only moves after the overlay is explicitly dismissed.
   useEffect(() => {
     if (
       isMountedRef.current &&
@@ -118,11 +144,51 @@ function Player({
       diceSum !== null &&
       diceSum !== undefined
     ) {
-      const currentSite = (currentPlayerRef.current.site + diceSum) % 40;
-      movePlayer(currentPlayerId, currentSite, directions.FORWARD, true);
+      const targetSite = (currentPlayerRef.current.site + diceSum) % 40;
+      pendingMoveRef.current = {
+        playerId: currentPlayerId,
+        site: targetSite,
+        direction: directions.FORWARD,
+      };
+      // Mark that THIS component is waiting for its own notification to close
+      waitingForOwnNotifRef.current = true;
+      showNotification({
+        title: `Player ${currentPlayerId + 1} Moves`,
+        message: `Rolling ${diceSum} — moving to position ${targetSite}`,
+        kind: 'move',
+      });
     }
-  }, [diceSum, currentPlayerId, movePlayer, setDiceSumCalledCount, network.isMultiplayer]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [diceSum, currentPlayerId, network.isMultiplayer, setDiceSumCalledCount]);
 
+  // ── Notification-close watcher ─────────────────────────────────────────
+  // Only fires the pending move when:
+  //   1. The overlay just closed (true → false transition)
+  //   2. waitingForOwnNotifRef is true  ← set only by THIS player's dice roll
+  //   3. There IS a pending move queued
+  // This prevents stale closes (e.g. Player 1's BUY_SITE auto-dismissing
+  // during Player 2's turn) from firing the wrong player's token movement.
+  useEffect(() => {
+    const notifShowing = !!notification?.show;
+    const justClosed = !notifShowing && notifWasShowingRef.current;
+
+    if (
+      isMountedRef.current &&
+      justClosed &&
+      waitingForOwnNotifRef.current &&
+      pendingMoveRef.current !== null
+    ) {
+      const { playerId, site, direction } = pendingMoveRef.current;
+      pendingMoveRef.current = null;
+      waitingForOwnNotifRef.current = false;
+      movePlayer(playerId, site, direction, true);
+    }
+
+    notifWasShowingRef.current = notifShowing;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [notification?.show]);
+
+  // ── Token position animation ────────────────────────────────────────────
   useEffect(() => {
     if (isMoving || isMountedRef.current === false) {
       const playerData = network.isMultiplayer
@@ -146,6 +212,7 @@ function Player({
     }
   }, [isMoving]);
 
+  // ── Post-move actions (rent, buy modal, jail, etc.) ─────────────────────
   useEffect(() => {
     const activePlayer = network.isMultiplayer
       ? playersData.activePlayer
@@ -262,6 +329,7 @@ const mapStateToProps = (store: any) => {
     siteData: store.siteData,
     noOfCardsInCategory: store.siteData.noOfCardsInCategory,
     network: store.network,
+    notification: store.notification,  // needed to watch overlay open/close
   };
 };
 

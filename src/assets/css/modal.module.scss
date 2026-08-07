@@ -13,6 +13,9 @@
 
 .cardModal {
   background-color: white;
+  color: #1a1a2e; /* force dark text; body is ivory-on-dark, this container is light */
+  border-radius: 16px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 215, 0, 0.2);
   overflow: hidden;
 }
 .closeStrip {
@@ -27,6 +30,7 @@
   font-size: 25px;
   font-weight: bold;
   padding: 5px 20px;
+  color: #1a1a2e;
 }
 
 .close {
